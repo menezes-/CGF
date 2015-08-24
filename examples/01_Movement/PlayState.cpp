@@ -19,8 +19,8 @@ using namespace std;
 
 void PlayState::init()
 {
-    playSprite1.load("data/img/Char14.png");
-	playSprite1.setPosition(10,100);
+    player.load("data/img/Char14.png");
+	player.setPosition(10,100);
 
     playSprite2.load("data/img/Char01.png");
 	playSprite2.setPosition(10,300);
@@ -92,18 +92,18 @@ void PlayState::handleEvents(cgf::Game* game)
 
 void PlayState::update(cgf::Game* game)
 {
-    float x = playSprite1.getPosition().x;
-    float y = playSprite1.getPosition().y;
+    float x = player.getPosition().x;
+    float y = player.getPosition().y;
     x += dirx*5;
     y += diry*5;
-    playSprite1.setPosition(x,y);
+    player.setPosition(x,y);
     player.update(game->getUpdateInterval());
 }
 
 void PlayState::draw(cgf::Game* game)
 {
     screen = game->getScreen();
-    screen->draw(playSprite1);
+    screen->draw(player);
     screen->draw(playSprite2);
     screen->draw(playSprite3);
 }
