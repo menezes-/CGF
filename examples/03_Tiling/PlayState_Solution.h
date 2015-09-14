@@ -54,6 +54,11 @@ class PlayState : public cgf::GameState
     sf::RenderWindow* screen;
     cgf::InputManager* im;
 
+    tmx::MapLoader* map;
+
+    sf::Font font;
+    sf::Text text;
+
     // Centers the camera on the player position
     void centerMapOnPlayer();
 };
