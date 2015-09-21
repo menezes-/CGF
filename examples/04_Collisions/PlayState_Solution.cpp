@@ -10,7 +10,7 @@
 #include <iostream>
 #include <cmath>
 #include "Game.h"
-#include "PlayState.h"
+#include "PlayState_Solution.h"
 #include "InputManager.h"
 
 PlayState PlayState::m_PlayState;
@@ -42,9 +42,15 @@ void PlayState::init()
     player.setPosition(40,100);
     player.loadAnimation("data/img/warrioranim.xml");
     player.setAnimation(walkStates[currentDir]);
-    player.setAnimRate(30);
-    player.setScale(1,1);
+    player.setAnimRate(15);
+    //player.setScale(1,1);
     player.play();
+
+    enemy.load("data/img/Char14s.png");
+    enemy.setPosition(40,250);
+    enemy.setXspeed(50);
+    enemy.setScale(2,2);
+//    edirx = 1; // right
 
     dirx = 0; // sprite dir: right (1), left (-1)
     diry = 0; // down (1), up (-1)
@@ -151,7 +157,13 @@ void PlayState::update(cgf::Game* game)
 {
     screen = game->getScreen();
     checkCollision(2, game, &player);
+    if(checkCollision(2, game, &enemy))
+        enemy.setXspeed(-enemy.getXspeed());
+    //enemy.update(game->getUpdateInterval());
 //    player.update(game->getUpdateInterval());
+    if(player.bboxCollision(enemy)) {
+        enemy.setVisible(false);
+    }
     centerMapOnPlayer();
 }
 
@@ -161,6 +173,7 @@ void PlayState::draw(cgf::Game* game)
     map->Draw(*screen);          // draw all layers
 //    map->Draw(*screen, 1);     // draw only the second layer
     screen->draw(player);
+    screen->draw(enemy);
     screen->draw(text);
 }
 
