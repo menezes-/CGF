@@ -20,8 +20,8 @@
 					<Add library="sfml-window" />
 					<Add library="sfml-system" />
 					<Add library="sfml-audio" />
-					<Add library="Box2D" />
 					<Add library="CGF-Linux" />
+					<Add library="Box2D" />
 					<Add library="libz" />
 					<Add directory="../../lib/Box2D-2.3.0/lib-Linux64" />
 					<Add directory="../../lib/SFML-2.2/lib-Linux64" />
@@ -43,8 +43,8 @@
 					<Add library="sfml-window" />
 					<Add library="sfml-system" />
 					<Add library="sfml-audio" />
-					<Add library="Box2D" />
 					<Add library="CGF-Linux" />
+					<Add library="Box2D" />
 					<Add library="libz" />
 					<Add directory="../../lib/Box2D-2.3.0/lib-Linux64" />
 					<Add directory="../../lib/SFML-2.2/lib-Linux64" />
