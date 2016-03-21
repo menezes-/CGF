@@ -31,8 +31,9 @@
 					<Add option="-g" />
 				</Compiler>
 				<Linker>
+					<Add library="..\..\bin\zlib1.dll" />
 					<Add directory="../../lib/Box2D-2.3.0/lib-Windows-CB" />
-					<Add directory="../../lib/SFML-2.2/lib-Windows" />
+					<Add directory="../../lib/SFML-2.3.2/lib-Windows" />
 				</Linker>
 			</Target>
 		</Build>
@@ -50,7 +51,6 @@
 			<Add library="sfml-system" />
 			<Add library="sfml-audio" />
 			<Add library="Box2D" />
-			<Add library="z" />
 		</Linker>
 		<Unit filename="../../lib/CGF/include/Anim.h" />
 		<Unit filename="../../lib/CGF/include/ClockHUD.h" />
