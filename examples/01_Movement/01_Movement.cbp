@@ -24,7 +24,7 @@
 					<Add library="CGF-Linux" />
 					<Add library="libz" />
 					<Add directory="../../lib/Box2D-2.3.0/lib-Linux64" />
-					<Add directory="../../lib/SFML-2.2/lib-Linux64" />
+					<Add directory="../../lib/SFML-2.3.2/lib-Linux64" />
 				</Linker>
 			</Target>
 			<Target title="Release-Linux">
@@ -47,7 +47,7 @@
 					<Add library="CGF-Linux" />
 					<Add library="libz" />
 					<Add directory="../../lib/Box2D-2.3.0/lib-Linux64" />
-					<Add directory="../../lib/SFML-2.2/lib-Linux64" />
+					<Add directory="../../lib/SFML-2.3.2/lib-Linux64" />
 				</Linker>
 			</Target>
 			<Target title="Debug-Windows">
@@ -67,6 +67,7 @@
 					<Add library="..\..\bin\CGF-Windows.dll" />
 					<Add library="Box2D" />
 					<Add directory="../../lib/Box2D-2.3.0/lib-Windows-CB" />
+					<Add directory="../../lib/SFML-2.3.2/lib-Windows" />
 					<Add directory="../../bin" />
 					<Add directory="../../lib" />
 				</Linker>
@@ -90,25 +91,26 @@
 					<Add library="..\..\bin\CGF-Windows.dll" />
 					<Add library="Box2D" />
 					<Add directory="../../lib/Box2D-2.3.0/lib-Windows-CB" />
+					<Add directory="../../lib/SFML-2.3.2/lib-Windows" />
 					<Add directory="../../bin" />
 				</Linker>
 			</Target>
 		</Build>
 		<Compiler>
 			<Add option="-std=c++11" />
-            <Add directory="../../lib/CGF/include" />
-            <Add directory="../../lib/CGF/include/tmxloader" />
-            <Add directory="../../lib/CGF/include/pugixml" />
+			<Add directory="../../lib/CGF/include" />
+			<Add directory="../../lib/CGF/include/tmxloader" />
+			<Add directory="../../lib/CGF/include/pugixml" />
 			<Add directory="../../lib/Box2D-2.3.0/include" />
 			<Add directory="../../lib/SFML-2.2/include" />
 		</Compiler>
 		<Linker>
 			<Add directory="../../lib" />
 		</Linker>
-		<Unit filename="MenuState.h" />
-		<Unit filename="PlayState.h" />
 		<Unit filename="MenuState.cpp" />
+		<Unit filename="MenuState.h" />
 		<Unit filename="PlayState.cpp" />
+		<Unit filename="PlayState.h" />
 		<Unit filename="main.cpp" />
 		<Extensions>
 			<code_completion />

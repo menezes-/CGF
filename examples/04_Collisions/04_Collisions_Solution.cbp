@@ -2,7 +2,7 @@
 <CodeBlocks_project_file>
 	<FileVersion major="1" minor="6" />
 	<Project>
-		<Option title="04_Collisions" />
+		<Option title="04_Collisions_Solution" />
 		<Option pch_mode="2" />
 		<Option compiler="gcc" />
 		<Build>
@@ -60,11 +60,11 @@
 					<Add option="-g" />
 				</Compiler>
 				<Linker>
-					<Add library="../../bin/sfml-graphics-2.dll" />
-					<Add library="../../bin/sfml-window-2.dll" />
-					<Add library="../../bin/sfml-system-2.dll" />
-					<Add library="../../bin/sfml-audio-2.dll" />
-					<Add library="../../bin/CGF-Windows.dll" />
+					<Add library="..\..\bin\sfml-graphics-2.dll" />
+					<Add library="..\..\bin\sfml-window-2.dll" />
+					<Add library="..\..\bin\sfml-system-2.dll" />
+					<Add library="..\..\bin\sfml-audio-2.dll" />
+					<Add library="..\..\bin\CGF-Windows.dll" />
 					<Add library="Box2D" />
 					<Add directory="../../lib/Box2D-2.3.0/lib-Windows-CB" />
 					<Add directory="../../bin" />
@@ -83,11 +83,11 @@
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
-					<Add library="../../bin/sfml-graphics-2.dll" />
-					<Add library="../../bin/sfml-window-2.dll" />
-					<Add library="../../bin/sfml-system-2.dll" />
-					<Add library="../../bin/sfml-audio-2.dll" />
-					<Add library="../../bin/CGF-Windows.dll" />
+					<Add library="..\..\bin\sfml-graphics-2.dll" />
+					<Add library="..\..\bin\sfml-window-2.dll" />
+					<Add library="..\..\bin\sfml-system-2.dll" />
+					<Add library="..\..\bin\sfml-audio-2.dll" />
+					<Add library="..\..\bin\CGF-Windows.dll" />
 					<Add library="Box2D" />
 					<Add directory="../../lib/Box2D-2.3.0/lib-Windows-CB" />
 					<Add directory="../../bin" />
