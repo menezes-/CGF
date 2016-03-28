@@ -23,9 +23,9 @@
 			</Target>
 			<Target title="Windows">
 				<Option output="../../lib/CGF-Windows" prefix_auto="1" extension_auto="1" />
-				<Option working_dir="../../lib" />
+				<Option working_dir="" />
 				<Option object_output="../../bin" />
-				<Option type="3" />
+				<Option type="2" />
 				<Option compiler="gcc" />
 				<Compiler>
 					<Add option="-g" />
