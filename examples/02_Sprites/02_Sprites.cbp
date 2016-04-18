@@ -65,8 +65,8 @@
 					<Add library="../../bin/sfml-system-2.dll" />
 					<Add library="../../bin/sfml-audio-2.dll" />
 					<Add library="Box2D" />
-					<Add library="libz" />
 					<Add library="CGF-Windows" />
+					<Add library="../../bin/zlib1.dll" />
 					<Add directory="../../lib/Box2D-2.3.0/lib-Windows-CB" />
 					<Add directory="../../lib/SFML-2.3.2/lib-Windows" />
 					<Add directory="../../bin" />
@@ -90,11 +90,12 @@
 					<Add library="../../bin/sfml-system-2.dll" />
 					<Add library="../../bin/sfml-audio-2.dll" />
 					<Add library="Box2D" />
-					<Add library="libz" />
 					<Add library="CGF-Windows" />
+					<Add library="../../bin/zlib1.dll" />
 					<Add directory="../../lib/Box2D-2.3.0/lib-Windows-CB" />
 					<Add directory="../../lib/SFML-2.3.2/lib-Windows" />
 					<Add directory="../../bin" />
+					<Add directory="../../lib" />
 				</Linker>
 			</Target>
 		</Build>
