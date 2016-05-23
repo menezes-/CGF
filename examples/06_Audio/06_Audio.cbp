@@ -24,7 +24,7 @@
 					<Add library="libz" />
 					<Add library="Box2D" />
 					<Add directory="../../lib/Box2D-2.3.0/lib-Linux64" />
-					<Add directory="../../lib/SFML-2.2/lib-Linux64" />
+					<Add directory="../../lib/SFML-2.3.2/lib-Linux64" />
 				</Linker>
 			</Target>
 			<Target title="Release-Linux">
@@ -47,7 +47,7 @@
 					<Add library="libz" />
 					<Add library="Box2D" />
 					<Add directory="../../lib/Box2D-2.3.0/lib-Linux64" />
-					<Add directory="../../lib/SFML-2.2/lib-Linux64" />
+					<Add directory="../../lib/SFML-2.3.2/lib-Linux64" />
 				</Linker>
 			</Target>
 			<Target title="Debug-Windows">
@@ -64,9 +64,11 @@
 					<Add library="../../bin/sfml-window-2.dll" />
 					<Add library="../../bin/sfml-system-2.dll" />
 					<Add library="../../bin/sfml-audio-2.dll" />
-					<Add library="../../bin/CGF-Windows.dll" />
 					<Add library="Box2D" />
+					<Add library="CGF-Windows" />
+					<Add library="../../bin/zlib1.dll" />
 					<Add directory="../../lib/Box2D-2.3.0/lib-Windows-CB" />
+					<Add directory="../../lib/SFML-2.3.2/lib-Windows" />
 					<Add directory="../../bin" />
 					<Add directory="../../lib" />
 				</Linker>
@@ -87,20 +89,23 @@
 					<Add library="../../bin/sfml-window-2.dll" />
 					<Add library="../../bin/sfml-system-2.dll" />
 					<Add library="../../bin/sfml-audio-2.dll" />
-					<Add library="../../bin/CGF-Windows.dll" />
 					<Add library="Box2D" />
+					<Add library="CGF-Windows" />
+					<Add library="../../bin/zlib1.dll" />
 					<Add directory="../../lib/Box2D-2.3.0/lib-Windows-CB" />
+					<Add directory="../../lib/SFML-2.3.2/lib-Windows" />
 					<Add directory="../../bin" />
+					<Add directory="../../lib" />
 				</Linker>
 			</Target>
 		</Build>
 		<Compiler>
 			<Add option="-std=c++11" />
 			<Add directory="../../lib/CGF/include" />
-			<Add directory="../../lib/CGF/include/tmxloader" />
 			<Add directory="../../lib/CGF/include/pugixml" />
 			<Add directory="../../lib/Box2D-2.3.0/include" />
-			<Add directory="../../lib/SFML-2.2/include" />
+			<Add directory="../../lib/SFML-2.3.2/include" />
+			<Add directory="../../lib/CGF/include/tmx" />
 		</Compiler>
 		<Linker>
 			<Add directory="../../lib" />
