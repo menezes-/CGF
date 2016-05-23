@@ -60,13 +60,13 @@
 					<Add option="-g" />
 				</Compiler>
 				<Linker>
-					<Add library="../../bin/sfml-graphics-2.dll" />
-					<Add library="../../bin/sfml-window-2.dll" />
-					<Add library="../../bin/sfml-system-2.dll" />
-					<Add library="../../bin/sfml-audio-2.dll" />
-					<Add library="Box2D" />
+					<Add library="..\..\bin\sfml-graphics-2.dll" />
+					<Add library="..\..\bin\sfml-window-2.dll" />
+					<Add library="..\..\bin\sfml-system-2.dll" />
+					<Add library="..\..\bin\sfml-audio-2.dll" />
 					<Add library="CGF-Windows" />
-					<Add library="../../bin/zlib1.dll" />
+					<Add library="Box2D" />
+					<Add library="..\..\bin\zlib1.dll" />
 					<Add directory="../../lib/Box2D-2.3.0/lib-Windows-CB" />
 					<Add directory="../../lib/SFML-2.3.2/lib-Windows" />
 					<Add directory="../../bin" />
@@ -85,13 +85,13 @@
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
-					<Add library="../../bin/sfml-graphics-2.dll" />
-					<Add library="../../bin/sfml-window-2.dll" />
-					<Add library="../../bin/sfml-system-2.dll" />
-					<Add library="../../bin/sfml-audio-2.dll" />
+					<Add library="..\..\bin\sfml-graphics-2.dll" />
+					<Add library="..\..\bin\sfml-window-2.dll" />
+					<Add library="..\..\bin\sfml-system-2.dll" />
+					<Add library="..\..\bin\sfml-audio-2.dll" />
 					<Add library="Box2D" />
 					<Add library="CGF-Windows" />
-					<Add library="../../bin/zlib1.dll" />
+					<Add library="..\..\bin\zlib1.dll" />
 					<Add directory="../../lib/Box2D-2.3.0/lib-Windows-CB" />
 					<Add directory="../../lib/SFML-2.3.2/lib-Windows" />
 					<Add directory="../../bin" />
