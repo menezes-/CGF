@@ -10,7 +10,7 @@
 #include <iostream>
 #include <cmath>
 #include "Game.h"
-#include "PlayState.h"
+#include "PlayState_Solution.h"
 #include "InputManager.h"
 
 PlayState PlayState::m_PlayState;
