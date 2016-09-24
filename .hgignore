@@ -6,3 +6,4 @@ syntax: glob
 .DS_Store
 #framework2
 *-build-desktop
+bin/examples
