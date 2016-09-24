@@ -91,7 +91,7 @@ void PlayState::init()
     text.setFont(font);
     text.setString(L"Test!");
     text.setCharacterSize(24); // in pixels, not points!
-    text.setColor(sf::Color::Red);
+    text.setFillColor(sf::Color::Red);
     text.setStyle(sf::Text::Bold | sf::Text::Underlined);
 
     cout << "PlayState Init Successful" << endl;

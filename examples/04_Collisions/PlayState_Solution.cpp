@@ -26,7 +26,7 @@ void PlayState::init()
     text.setFont(font);
     text.setString(L"Testing text output in SFML");
     text.setCharacterSize(24); // in pixels
-    text.setColor(sf::Color::Yellow);
+    text.setFillColor(sf::Color::Yellow);
     text.setStyle(sf::Text::Bold | sf::Text::Underlined);
 
     map = new tmx::MapLoader("data/maps");       // all maps/tiles will be read from data/maps

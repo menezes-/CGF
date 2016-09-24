@@ -221,7 +221,7 @@ namespace tmx
 			rt.draw(m_debugShape);
 			sf::Text text(m_name, m_debugFont, 14u);
 			text.setPosition(m_position);
-			text.setColor(sf::Color::Black);
+			text.setFillColor(sf::Color::Black);
 			rt.draw(text);
 		}
 	

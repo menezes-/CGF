@@ -42,7 +42,7 @@ private:
 
         elem.setPosition(pos.x+6.0f, pos.y+6.0f);
         // Draw the drop shadow
-        elem.setColor(sf::Color::Black);
+        elem.setFillColor(sf::Color::Black);
         for (std::size_t i = 0; i < stats.size(); ++i)
         {
             elem.setString(stats[i].str);
@@ -58,7 +58,7 @@ private:
         for (std::size_t i = 0; i < stats.size(); ++i)
         {
             elem.setString(stats[i].str);
-            elem.setColor(stats[i].color);
+            elem.setFillColor(stats[i].color);
 
             rt.draw(elem, states);
 

@@ -50,7 +50,7 @@ void PlayState::init()
     // select the font
     text.setFont(font);
     text.setCharacterSize(12);
-    text.setColor(sf::Color::Black);
+    text.setFillColor(sf::Color::Black);
     //text.setStyle(sf::Text::Bold | sf::Text::Underlined);
 
     firstTime = true; // to set map position at first update
