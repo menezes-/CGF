@@ -105,7 +105,7 @@ check_cxx_compiler_flag(-flto GXX_HAS_LTO_FLAG)
 message(STATUS "GXX_HAS_LTO_FLAG = ${GXX_HAS_LTO_FLAG}")
 
 target_compile_options(CGF PUBLIC
-                       -std=c++11 -Wall -Wextra -Wno-unused-parameter -Wno-unused-function -Wno-ignored-qualifiers
+                       -std=c++11 -Wall -Wextra -Wno-unused-parameter -Wno-unused-function -Wno-ignored-qualifiers -Wno-reorder
                        $<$<CONFIG:Debug>:-g -O0>
                        $<$<CONFIG:Release>:-g0 -O2 -s $<$<BOOL:${GXX_HAS_LTO_FLAG}>:-flto>>)
 

@@ -196,7 +196,7 @@ void MapLoader::Draw(sf::RenderTarget& rt, MapLayer::DrawType type)
 		m_SetDrawingBounds(rt.getView());
 		for(auto layer : m_layers)
 		{
-			if(layer.type = ObjectGroup)
+			if(layer.type == ObjectGroup)
 			{
 			for(auto object : layer.objects)		
 				object.DrawDebugShape(rt);
