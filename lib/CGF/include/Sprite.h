@@ -32,11 +32,11 @@ public:
     Sprite();
     virtual ~Sprite();
 
-    bool load(char filename[]);
-    bool load(char filename[], int w, int h, int hSpace, int vSpace, int xIni, int yIni,
-                int column, int row, int total);
-    bool loadXML(char filename[]);
-    bool loadAnimation(char filename[]);
+    bool load(const char *filename);
+    bool load(const char *filename, int w, int h, int hSpace, int vSpace, int xIni, int yIni,
+              int column, int row, int total);
+    bool loadXML(const char *filename);
+    bool loadAnimation(const char *filename);
 
     void setVisible(bool vis) { visible = vis; }
     bool isVisible() { return visible; }
@@ -137,7 +137,16 @@ private:
     double curFrameD;           // the current frame as double
     int framecount,framedelay;  // slow down the frame animation
 
-    bool loadMultiImage(char nomeArq[], int w, int h, int hSpace, int vSpace, int xIni, int yIni, int column, int row, int total);
+    bool loadMultiImage(const char *nomeArq,
+                        int w,
+                        int h,
+                        int hSpace,
+                        int vSpace,
+                        int xIni,
+                        int yIni,
+                        int column,
+                        int row,
+                        int total);
 
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 };

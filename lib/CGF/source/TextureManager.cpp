@@ -35,7 +35,7 @@ TextureManager::~TextureManager()
     }
 }
 
-sf::Texture* TextureManager::findTexture(char* nomeArq)
+sf::Texture* TextureManager::findTexture(const char *nomeArq)
 {
     if(imgs.find(nomeArq) == imgs.end()) {
         cout << "New texture: " << nomeArq;
@@ -52,12 +52,12 @@ sf::Texture* TextureManager::findTexture(char* nomeArq)
     return imgs[nomeArq];
 }
 
-void TextureManager::setDefaultImageDir(char* dir)
+void TextureManager::setDefaultImageDir(const char *dir)
 {
     defaultImageDir = dir;
 }
 
-void TextureManager::releaseTexture(char* nomeArq)
+void TextureManager::releaseTexture(const char *nomeArq)
 {
     if(imgs.find(nomeArq) != imgs.end())
     {

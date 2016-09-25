@@ -38,7 +38,7 @@ Sprite::Sprite()
     currentAnim = NULL;
 }
 
-bool Sprite::load(char filename[])
+bool Sprite::load(const char *filename)
 {
     tex = tm->findTexture(filename);
     if(tex == NULL)
@@ -61,8 +61,8 @@ bool Sprite::load(char filename[])
     return true;
 }
 
-bool Sprite::load(char filename[], int w, int h, int hSpace, int vSpace, int xIni, int yIni,
-                 int column, int row, int total)
+bool Sprite::load(const char *filename, int w, int h, int hSpace, int vSpace, int xIni, int yIni,
+                  int column, int row, int total)
 {
     if(!loadMultiImage(filename,w,h,hSpace,vSpace,xIni,yIni,column,row,total))
         return false;
@@ -72,7 +72,7 @@ bool Sprite::load(char filename[], int w, int h, int hSpace, int vSpace, int xIn
 	return true;
 }
 
-bool Sprite::loadXML(char xmlFile[])
+bool Sprite::loadXML(const char *xmlFile)
 {
     cout << "Sprite::loadXML " << xmlFile << endl;
 
@@ -145,7 +145,7 @@ bool Sprite::loadXML(char xmlFile[])
     return true;
 }
 
-bool Sprite::loadAnimation(char filename[])
+bool Sprite::loadAnimation(const char *filename)
 {
     cout << "Sprite::loadAnimation " << filename << endl;
 
@@ -175,7 +175,16 @@ bool Sprite::loadAnimation(char filename[])
     return true;
 }
 
-bool Sprite::loadMultiImage(char filename[], int w, int h, int hSpace, int vSpace, int xIni, int yIni, int columns, int rows, int total)
+bool Sprite::loadMultiImage(const char *filename,
+                            int w,
+                            int h,
+                            int hSpace,
+                            int vSpace,
+                            int xIni,
+                            int yIni,
+                            int columns,
+                            int rows,
+                            int total)
 {
     tex = tm->findTexture(filename);
 
