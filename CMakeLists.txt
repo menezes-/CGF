@@ -52,6 +52,10 @@ set(CGF_HEADERS
     ${CGF_ROOT}/lib/CGF/include/tmx/zlib.h
     ${CGF_ROOT}/lib/CGF/include/tmx/Helpers.h
     ${CGF_ROOT}/lib/CGF/include/tmx/MapObject.h
+    ${CGF_ROOT}/lib/CGF/include/tmx/Log.h
+    ${CGF_ROOT}/lib/CGF/include/tmx/MapLayer.h
+    ${CGF_ROOT}/lib/CGF/include/tmx/tmx2box2d.h
+    ${CGF_ROOT}/lib/CGF/include/tmx/DebugShape.h
     ${CGF_ROOT}/lib/CGF/include/tmx/zconf.h
     ${CGF_ROOT}/lib/CGF/include/TextureManager.h
     )
@@ -63,6 +67,10 @@ set(CGF_SOURCES
     ${CGF_ROOT}/lib/CGF/source/tmxloader/MapLoaderPublic.cpp
     ${CGF_ROOT}/lib/CGF/source/tmxloader/QuadTreeNode.cpp
     ${CGF_ROOT}/lib/CGF/source/tmxloader/MapLoaderPrivate.cpp
+    ${CGF_ROOT}/lib/CGF/source/tmxloader/DebugShape.cpp
+    ${CGF_ROOT}/lib/CGF/source/tmxloader/MapLayer.cpp
+    ${CGF_ROOT}/lib/CGF/source/tmxloader/MapObject.cpp
+    ${CGF_ROOT}/lib/CGF/source/tmxloader/tmx2box2d.cpp
     ${CGF_ROOT}/lib/CGF/source/pugixml/pugixml.cpp
     ${CGF_ROOT}/lib/CGF/source/Sprite.cpp
     ${CGF_ROOT}/lib/CGF/source/Game.cpp
