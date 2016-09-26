@@ -107,19 +107,19 @@ void PlayState::handleEvents(cgf::Game* game)
     {
         if(event.type == sf::Event::Closed)
             game->quit();
-        if(event.type == sf::Event::KeyPressed)
-            if(event.key.code == sf::Keyboard::Escape)
+        if(event.type == sf::Event::KeyPressed) {
+            if (event.key.code == sf::Keyboard::Escape)
                 game->quit();
-            else if(event.key.code == sf::Keyboard::S)
+            else if (event.key.code == sf::Keyboard::S)
                 game->toggleStats();
-            else if(event.key.code == sf::Keyboard::B)
-            {
+            else if (event.key.code == sf::Keyboard::B) {
                 steerMode++;
-                if(steerMode > EVADE_BEHAVIOR)
+                if (steerMode > EVADE_BEHAVIOR)
                     steerMode = CHASE_BEHAVIOR;
             }
-            else if(event.key.code == sf::Keyboard::T)
+            else if (event.key.code == sf::Keyboard::T)
                 showTrails = !showTrails;
+        }
     }
 
     int dirx, diry;

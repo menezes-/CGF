@@ -158,7 +158,7 @@ void PlayState::handleEvents(cgf::Game* game)
     {
         if(event.type == sf::Event::Closed)
             game->quit();
-        if(event.type == sf::Event::KeyPressed)
+        if(event.type == sf::Event::KeyPressed){
             if(event.key.code == sf::Keyboard::S)
                 game->toggleStats();
             else if(event.key.code == sf::Keyboard::G)
@@ -171,6 +171,7 @@ void PlayState::handleEvents(cgf::Game* game)
             }
             else if(event.key.code == sf::Keyboard::Space)
                 pball->ApplyLinearImpulse(b2Vec2(0,-1200), pball->GetWorldCenter(), true);
+        }
     }
 
     int dirx, diry;

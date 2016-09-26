@@ -386,7 +386,7 @@ void Sprite::update(double deltaTime, bool updatePos)
         {
             animState = AnimState::STOPPED;
         }
-        if(curframe > lastFrame && looping || firstFrame == lastFrame) {
+        if((curframe > lastFrame && looping) || firstFrame == lastFrame) {
             curFrameD = firstFrame;
             curframe = firstFrame;
         }
