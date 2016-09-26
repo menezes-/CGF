@@ -49,7 +49,6 @@ set(CGF_HEADERS
     ${CGF_ROOT}/lib/CGF/include/Sprite.h
     ${CGF_ROOT}/lib/CGF/include/tmx/QuadTreeNode.h
     ${CGF_ROOT}/lib/CGF/include/tmx/MapLoader.h
-    ${CGF_ROOT}/lib/CGF/include/tmx/zlib.h
     ${CGF_ROOT}/lib/CGF/include/tmx/Helpers.h
     ${CGF_ROOT}/lib/CGF/include/tmx/MapObject.h
     ${CGF_ROOT}/lib/CGF/include/tmx/zconf.h
@@ -102,25 +101,21 @@ add_library(CGF ${CGF_HEADERS} ${CGF_SOURCES})
 # LTO
 include(CheckCXXCompilerFlag)
 check_cxx_compiler_flag(-flto GXX_HAS_LTO_FLAG)
-message(STATUS "GXX_HAS_LTO_FLAG = ${GXX_HAS_LTO_FLAG}")
+message(STATUS "Suporta LTO = ${GXX_HAS_LTO_FLAG}")
 
 target_compile_options(CGF PUBLIC
                        -std=c++11 -Wall -Wextra -Wno-unused-parameter -Wno-unused-function -Wno-ignored-qualifiers -Wno-reorder
                        $<$<CONFIG:Debug>:-g -O0>
                        $<$<CONFIG:Release>:-g0 -O2 -s $<$<BOOL:${GXX_HAS_LTO_FLAG}>:-flto>>)
 
-
-# se for linux usa o find_packages, se for windows
-# linka direto com o zlib1.dll
 if (WIN32)
-    target_link_libraries(CGF SHARED bin/zlib1.dll)
-else ()
-    find_package(ZLIB REQUIRED)
-    target_include_directories(CGF PUBLIC ${ZLIB_INCLUDE_DIRS})
-    target_link_libraries(CGF ${ZLIB_LIBRARIES})
+    # no windows procura a zlib nesta pasta
+    set(${ZLIB_ROOT} ${CGF_ROOT}/bin/zlib/)
 endif ()
 
+find_package(ZLIB REQUIRED)
 
+target_include_directories(CGF PUBLIC ${ZLIB_INCLUDE_DIRS})
 target_include_directories(CGF PUBLIC ${CGF_ROOT}/lib/CGF/include)
 target_include_directories(CGF PUBLIC ${SFML_ROOT}/include)
 target_include_directories(CGF PUBLIC ${BOX2D_ROOT}/include)
