@@ -1,6 +1,78 @@
 cmake_minimum_required(VERSION 3.5)
 project(CGF)
 
+function(get_mingw_exception_dll)
+    # determina a dll de exceção usada pelo mingw
+    # essa função é posteriormente usada para copiar a dll para a pasta dos exemplos
+    if (CMAKE_SIZEOF_VOID_P EQUAL 8)
+        SET(ARCH64_BITS TRUE)
+    else ()
+        SET(ARCH64_BITS FALSE)
+    endif ()
+    if (MINGW AND ARCH64_BITS)
+        get_filename_component(MINGW_BIN_PATH ${CMAKE_CXX_COMPILER} PATH)
+        file(GLOB allddls ${MINGW_BIN_PATH}/*.dll)
+        set(MINGW_GCC_THREAD "")
+        set(MINGW_GCC_EXCEPTION "")
+        foreach (f ${allddls})
+            if (${f} MATCHES "libgcc")
+                if (${f} MATCHES "dw2")
+                    set(MINGW_GCC_EXCEPTION_DLL ${f} PARENT_SCOPE)
+                elseif (${f} MATCHES "seh")
+                    set(MINGW_GCC_EXCEPTION_DLL ${f} PARENT_SCOPE)
+                elseif (${f} MATCHES "sjlj")
+                    set(MINGW_GCC_EXCEPTION_DLL ${f} PARENT_SCOPE)
+                endif ()
+            endif ()
+        endforeach ()
+    endif ()
+endfunction()
+
+
+function(cgf_dlls_to_target target)
+    if (WIN32)
+        # copia as dlls para a pasta de saida se necessario
+        if (BUILD_SHARED_LIBS)
+            # DLLs geradas pelo CMAKE
+            set(DLL_TARGETS
+                sfml-system
+                sfml-window
+                sfml-graphics
+                sfml-audio
+                ${BOX2D_LIB}
+                CGF
+                )
+            foreach (target_dll ${DLL_TARGETS})
+                add_custom_command(
+                        TARGET ${target}
+                        POST_BUILD
+                        COMMAND ${CMAKE_COMMAND}
+                        ARGS -E copy_if_different $<TARGET_FILE:${target_dll}> $<TARGET_FILE_DIR:${target}>
+                )
+            endforeach ()
+
+            # copia as DLLs do mingw
+            get_filename_component(MINGW_BIN_PATH ${CMAKE_CXX_COMPILER} PATH)
+            get_mingw_exception_dll()
+            set(MINGW_DLLS ${PROJECT_SOURCE_DIR}/bin/zlib/zlib1.dll ${MINGW_BIN_PATH}/libstdc++-6.dll ${MINGW_BIN_PATH}/libwinpthread-1.dll ${MINGW_GCC_EXCEPTION_DLL})
+
+            foreach (mingw_dll ${MINGW_DLLS})
+                if (EXISTS ${mingw_dll})
+                    add_custom_command(
+                            TARGET ${target}
+                            POST_BUILD
+                            COMMAND ${CMAKE_COMMAND}
+                            ARGS -E copy_if_different ${mingw_dll} $<TARGET_FILE_DIR:${target}>
+                    )
+                else ()
+                    message(WARNING "arquivo ${mingw_dll} não existe")
+                endif ()
+            endforeach ()
+        endif ()
+    endif ()
+
+endfunction()
+
 function(cgf_add_example example)
     # adiciona um examplo, criadno um executable, linkando com a biblioteca CGF
     # e coloca o executavel, junto com os arquivos necessários (pasta bin/data), dentro
@@ -26,6 +98,8 @@ function(cgf_add_example example)
                            ${CMAKE_SOURCE_DIR}/bin/data $<TARGET_FILE_DIR:${example}>/data)
     endif ()
 
+    # adiciona as dlls no windows, se for necessário
+    cgf_dlls_to_target(${example})
 
 endfunction()
 
@@ -75,11 +149,6 @@ set(SFML_ROOT lib/SFML-2.4.0)
 add_subdirectory(lib/SFML-2.4.0)
 #=====================SFML=====================
 
-# a partir daqui é necessário desabilitar as "shared libraries" se não a Box2D começa a dar problema
-# (https://github.com/erincatto/Box2D/wiki/FAQ#can-i-use-box2d-in-a-dll).
-# existem soluções melhores para isso:
-# 1) desacoplara biblioteca Box2D da bilioteca
-# 2) tentar compilar a Box2D com -fPIC e --whole-archive (não é garantido que vá funcionar)
 
 #=====================BOX2D=====================
 set(BOX2D_ROOT ${CGF_ROOT}/lib/Box2D-2.3.0)
