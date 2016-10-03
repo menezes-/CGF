@@ -196,7 +196,7 @@ target_link_libraries(CGF ${BOX2D_LIB} sfml-system sfml-window sfml-graphics sfm
 ######################EXEMPLOS######################
 
 set(EXAMPLE_OUTPUT ${PROJECT_SOURCE_DIR}/bin/example CACHE PATH "Aonde vão os binários dos exemplos")
-set(BUILD_EXAMPLES TRUE CACHE BOOL "Compilar os exemplos")
+set(BUILD_EXAMPLES FALSE CACHE BOOL "Compilar os exemplos")
 
 if (BUILD_EXAMPLES)
     set(E1
