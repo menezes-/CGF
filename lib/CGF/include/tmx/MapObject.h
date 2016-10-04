@@ -32,10 +32,10 @@ it freely, subject to the following restrictions:
 #include <string>
 #include <vector>
 #include <map>
-#include <iostream>
 #include <SFML/System.hpp>
 #include <SFML/Graphics.hpp>
 #include <tmx/Helpers.h>
+#include "Debug.h"
 
 namespace tmx
 {
@@ -63,8 +63,8 @@ namespace tmx
             if(!m_debugFont.loadFromFile("data/fonts/arial.ttf"))
 			{
 				//feel free to supress these messages
-				std::cout << "If you wish to output text during debugging please specify a font file in the map object class" << std::endl;
-				std::cout << "If you do not wish to use debug output this can be safely ignored." << std:: endl;
+				DEBUG_MSG("If you wish to output text during debugging please specify a font file in the map object class");
+				DEBUG_MSG("If you do not wish to use debug output this can be safely ignored.");
 			}
 		};
 

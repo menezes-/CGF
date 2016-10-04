@@ -27,6 +27,7 @@ it freely, subject to the following restrictions:
 *********************************************************************/
 
 #include <tmx/MapLoader.h>
+#include "Debug.h"
 
 using namespace tmx;
 
@@ -66,8 +67,8 @@ const bool MapLoader::Load(std::string map)
 	pugi::xml_parse_result result = mapDoc.load_file(map.c_str());
 	if(!result)
 	{
-		std::cout << "Failed to open " << map << std::endl;
-		std::cout << "Reason: " << result.description() << std::endl;
+		DEBUG_MSG("Failed to open " << map);
+		DEBUG_MSG("Reason: " << result.description());
 		return m_mapLoaded = false;
 	}
 
@@ -75,7 +76,7 @@ const bool MapLoader::Load(std::string map)
 	pugi::xml_node mapNode = mapDoc.child("map");
 	if(!mapNode)
 	{
-		std::cout << "Map node not found. Map " << map << " not loaded." << std::endl;
+		DEBUG_MSG("Map node not found. Map " << map << " not loaded.");
 		return m_mapLoaded = false;
 	}
 	if(!(m_mapLoaded = m_ParseMapNode(mapNode))) return false;
@@ -119,8 +120,8 @@ const bool MapLoader::Load(std::string map)
 
 	m_CreateDebugGrid();
 
-	std::cout << "Parsed " << m_layers.size() << " layers." << std::endl;
-	std::cout << "Loaded " << map << " successfully." << std::endl;
+	DEBUG_MSG("Parsed " << m_layers.size() << " layers.");
+	DEBUG_MSG("Loaded " << map << " successfully.");
 
 	return m_mapLoaded = true;
 }

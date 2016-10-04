@@ -30,6 +30,7 @@ it freely, subject to the following restrictions:
 #include <sstream>
 #include <zlib.h>
 #include <cstring>
+#include "Debug.h"
 
 using namespace tmx;
 
@@ -67,7 +68,7 @@ const bool MapLoader::m_ParseMapNode(const pugi::xml_node& mapNode)
 		!(m_tileWidth = mapNode.attribute("tilewidth").as_int()) ||
 		!(m_tileHeight = mapNode.attribute("tileheight").as_int()))
 	{
-		std::cout << "Invalid tile size found, check map data. Map not loaded." << std::endl;
+		DEBUG_MSG("Invalid tile size found, check map data. Map not loaded.");
 		return false;
 	}
 
@@ -85,7 +86,7 @@ const bool MapLoader::m_ParseMapNode(const pugi::xml_node& mapNode)
 	}
 	else
 	{
-		std::cout << "Map orientation " << orientation << " not currently supported. Map not loaded." << std::endl;
+		DEBUG_MSG("Map orientation " << orientation << " not currently supported. Map not loaded.");
 		return false;
 	}
 
@@ -99,7 +100,7 @@ const bool MapLoader::m_ParseMapNode(const pugi::xml_node& mapNode)
 			std::string value = propertyNode.attribute("value").as_string();
 			m_properties[name] = value;
 			propertyNode = propertyNode.next_sibling("property");
-			std::cout << "Added map property " << name << " with value " << value << std::endl;
+			DEBUG_MSG("Added map property " << name << " with value " << value);
 		}
 	}
 
@@ -111,10 +112,10 @@ const bool MapLoader::m_ParseTileSets(const pugi::xml_node& mapNode)
 	pugi::xml_node tileset;
 	if(!(tileset = mapNode.child("tileset")))
 	{
-		std::cout << "No tile sets found." << std::endl;
+		DEBUG_MSG("No tile sets found.");
 		return false;
 	}
-	std::cout << "Caching image files, please wait..." << std::endl;
+	DEBUG_MSG("Caching image files, please wait...");
 
 	//first tile should always be transparent / empty as GIDs start at 1
 	if(!m_tileTextures.empty()) m_tileTextures.clear();
@@ -138,8 +139,8 @@ const bool MapLoader::m_ParseTileSets(const pugi::xml_node& mapNode)
 			pugi::xml_parse_result result = tsxDoc.load_file(path.c_str());
 			if(!result)
 			{
-				std::cout << "Failed to open external tsx document: " << path << std::endl;
-				std::cout << "Reason: " << result.description() << std::endl;
+				DEBUG_MSG("Failed to open external tsx document: " << path);
+				DEBUG_MSG("Reason: " << result.description());
 				m_Unload(); //purge any partially loaded data
 				return false;
 			}
@@ -157,7 +158,7 @@ const bool MapLoader::m_ParseTileSets(const pugi::xml_node& mapNode)
 		tileset = tileset.next_sibling("tileset");
 	}
 
-	std::cout << "Cached " << m_tileTextures.size() << " tiles." << std::endl;
+	DEBUG_MSG("Cached " << m_tileTextures.size() << " tiles.");
 	return true;
 }
 
@@ -169,7 +170,7 @@ const bool MapLoader::m_ProcessTiles(const pugi::xml_node& tilesetNode)
 	if(!(tileWidth = tilesetNode.attribute("tilewidth").as_int()) ||
 		!(tileHeight = tilesetNode.attribute("tileheight").as_int()))
 	{
-		std::cout << "Invalid tileset data found. Map not loaded." << std::endl;
+		DEBUG_MSG( "Invalid tileset data found. Map not loaded.");
 		m_Unload();
 		return false;
 	}
@@ -180,7 +181,7 @@ const bool MapLoader::m_ProcessTiles(const pugi::xml_node& tilesetNode)
 	pugi::xml_node imageNode;
 	if(!(imageNode = tilesetNode.child("image")) || !imageNode.attribute("source"))
 	{
-		std::cout << "Missing image data in tmx file. Map not loaded." << std::endl;
+		DEBUG_MSG("Missing image data in tmx file. Map not loaded.");
 		m_Unload();
 		return false;
 	}
@@ -239,13 +240,13 @@ const bool MapLoader::m_ProcessTiles(const pugi::xml_node& tilesetNode)
 		}
 	}
 
-	std::cout << "Processed " << imagePath << std::endl;
+	DEBUG_MSG("Processed " << imagePath);
 	return true;
 }
 
 const bool MapLoader::m_ParseLayer(const pugi::xml_node& layerNode)
 {
-	std::cout << "Found standard map layer " << layerNode.attribute("name").as_string() << std::endl;
+	DEBUG_MSG("Found standard map layer " << layerNode.attribute("name").as_string());
 
 	MapLayer layer(Layer);
 	if(layerNode.attribute("name")) layer.name = layerNode.attribute("name").as_string();
@@ -259,7 +260,7 @@ const bool MapLoader::m_ParseLayer(const pugi::xml_node& layerNode)
 	pugi::xml_node dataNode;
 	if(!(dataNode = layerNode.child("data")))
 	{
-		std::cout << "Layer data missing or corrupt. Map not loaded." << std::endl;
+		DEBUG_MSG("Layer data missing or corrupt. Map not loaded.");
 		return false;
 	}
 	//decode and decompress data first if necessary. See https://github.com/bjorn/tiled/wiki/TMX-Map-Format#data
@@ -271,7 +272,7 @@ const bool MapLoader::m_ParseLayer(const pugi::xml_node& layerNode)
 
 		if(encoding == "base64")
 		{
-			std::cout << "Found Base64 encoded layer data, decoding..." << std::endl;
+			DEBUG_MSG("Found Base64 encoded layer data, decoding...");
 			//remove any newlines or white space created by tab spaces in document
 			std::stringstream ss;
 			ss << data;
@@ -286,14 +287,15 @@ const bool MapLoader::m_ParseLayer(const pugi::xml_node& layerNode)
 			//check for compression (only used with base64 encoded data)
 			if(dataNode.attribute("compression"))
 			{
+#ifndef DISABLE_LOGGING
 				std::string compression	= dataNode.attribute("compression").as_string();
-				std::cout << "Found " << compression << " compressed layer data, decompressing..." << std::endl;
-
+				DEBUG_MSG("Found " << compression << " compressed layer data, decompressing...");
+#endif
 				//decompress with zlib
 				int dataSize = data.length() * sizeof(unsigned char);
 				if(!m_Decompress(data.c_str(), byteArray, dataSize, expectedSize))
 				{
-					std::cout << "Failed to decompress map data. Map not loaded." << std::endl;
+					DEBUG_MSG("Failed to decompress map data. Map not loaded.");
 					return false;
 				}
 			}
@@ -321,7 +323,7 @@ const bool MapLoader::m_ParseLayer(const pugi::xml_node& layerNode)
 		}
 		else if(encoding == "csv")
 		{
-			std::cout << "CSV encoded layer data found." << std::endl;
+			DEBUG_MSG("CSV encoded layer data found.");
 
 			std::vector<int> tileGIDs;
 			std::stringstream datastream(data);
@@ -351,17 +353,17 @@ const bool MapLoader::m_ParseLayer(const pugi::xml_node& layerNode)
 		}
 		else
 		{
-			std::cout << "Unsupported encoding of layer data found. Map not Loaded." << std::endl;
+			DEBUG_MSG("Unsupported encoding of layer data found. Map not Loaded.");
 			return false;
 		}
 	}
 	else //unencoded
 	{
-		std::cout << "Found unencoded data." << std::endl;
+		DEBUG_MSG("Found unencoded data.");
 		pugi::xml_node tileNode;
 		if(!(tileNode = dataNode.child("tile")))
 		{
-			std::cout << "No tile data found. Map not loaded." << std::endl;
+			DEBUG_MSG("No tile data found. Map not loaded.");
 			return false;
 		}
 
@@ -467,12 +469,12 @@ void MapLoader::m_AddTileToLayer(MapLayer& layer, sf::Uint16 x, sf::Uint16 y, sf
 
 const bool MapLoader::m_ParseObjectgroup(const pugi::xml_node& groupNode)
 {
-	std::cout << "Found object layer " << groupNode.attribute("name").as_string() << std::endl;
+	DEBUG_MSG("Found object layer " << groupNode.attribute("name").as_string());
 
 	pugi::xml_node objectNode;
 	if(!(objectNode = groupNode.child("object")))
 	{
-		std::cout << "Object group contains no objects" << std::endl;
+		DEBUG_MSG("Object group contains no objects");
 		return true;
 	}
 
@@ -490,7 +492,7 @@ const bool MapLoader::m_ParseObjectgroup(const pugi::xml_node& groupNode)
 	{
 		if(!objectNode.attribute("x") || !objectNode.attribute("y"))
 		{
-			std::cout << "Object missing position data. Map not loaded." << std::endl;
+			DEBUG_MSG("Object missing position data. Map not loaded.");
 			m_Unload();
 			return false;
 		}
@@ -541,7 +543,7 @@ const bool MapLoader::m_ParseObjectgroup(const pugi::xml_node& groupNode)
 			//split coords into pairs
 			if(objectNode.first_child().attribute("points"))
 			{
-				std::cout << "Processing poly shape points..." << std::endl;
+				DEBUG_MSG("Processing poly shape points...");
 				std::string pointlist = objectNode.first_child().attribute("points").as_string();
 				std::stringstream stream(pointlist);
 				std::vector<std::string> points;
@@ -567,12 +569,12 @@ const bool MapLoader::m_ParseObjectgroup(const pugi::xml_node& groupNode)
 			}
 			else
 			{
-				std::cout << "Points for polygon or polyline object are missing" << std::endl;
+				DEBUG_MSG("Points for polygon or polyline object are missing");
 			}
 		}
 		else if(!objectNode.attribute("gid")) //invalid  attributes
 		{
-			std::cout << "Objects with no parameters found, skipping.." << std::endl;
+			DEBUG_MSG("Objects with no parameters found, skipping..");
 			objectNode = objectNode.next_sibling("object");
 			continue;
 		}
@@ -587,7 +589,7 @@ const bool MapLoader::m_ParseObjectgroup(const pugi::xml_node& groupNode)
 				std::string value = propertyNode.attribute("value").as_string();
 				object.SetProperty(name, value);
 
-				std::cout << "Set object property " << name << " with value " << value << std::endl;
+				DEBUG_MSG("Set object property " << name << " with value " << value);
 				propertyNode = propertyNode.next_sibling("property");
 			}
 		}
@@ -600,7 +602,7 @@ const bool MapLoader::m_ParseObjectgroup(const pugi::xml_node& groupNode)
 		if(objectNode.attribute("gid"))
 		{
 			int gid = objectNode.attribute("gid").as_int();
-			std::cout << "Found object with tile GID " << gid << std::endl;
+			DEBUG_MSG("Found object with tile GID " << gid);
 			MapTile tile;
 			tile.sprite.setTexture(m_tileTextures[gid]);
 			tile.sprite.setRotation(object.GetRotation());
@@ -641,19 +643,19 @@ const bool MapLoader::m_ParseObjectgroup(const pugi::xml_node& groupNode)
 	}
 
 	m_layers.push_back(layer); //do this last
-	std::cout << "Processed " << layer.objects.size() << " objects" << std::endl;
+	DEBUG_MSG("Processed " << layer.objects.size() << " objects");
 	return true;
 }
 
 const bool MapLoader::m_ParseImageLayer(const pugi::xml_node& imageLayerNode)
 {
-	std::cout << "Found image layer " << imageLayerNode.attribute("name").as_string() << std::endl;
+	DEBUG_MSG("Found image layer " << imageLayerNode.attribute("name").as_string());
 
 	pugi::xml_node imageNode;
 	//load image
 	if(!(imageNode = imageLayerNode.child("image")) || !imageNode.attribute("source"))
 	{
-		std::cout << "Image layer " << imageLayerNode.attribute("name").as_string() << " missing image source property. Map not loaded." << std::endl;
+		DEBUG_MSG("Image layer " << imageLayerNode.attribute("name").as_string() << " missing image source property. Map not loaded.");
 		return false;
 	}
 
@@ -703,7 +705,7 @@ void MapLoader::m_ParseLayerProperties(const pugi::xml_node& propertiesNode, Map
 		std::string value = propertyNode.attribute("value").as_string();
 		layer.properties[name] = value;
 		propertyNode = propertyNode.next_sibling("property");
-		std::cout << "Added layer property " << name << " with value " << value << std::endl;
+		DEBUG_MSG("Added layer property " << name << " with value " << value);
 	}
 }
 
@@ -796,7 +798,7 @@ const bool MapLoader::m_Decompress(const char* source, std::vector<unsigned char
 {
 	if(!source)
 	{
-		std::cout << "Input string is empty, decompression failed." << std::endl;
+		DEBUG_MSG("Input string is empty, decompression failed.");
 		return false;
 	}
 
@@ -813,7 +815,7 @@ const bool MapLoader::m_Decompress(const char* source, std::vector<unsigned char
 
 	if(inflateInit2(&stream, 15 + 32) != Z_OK)
 	{
-		std::cout << "inflate 2 failed" << std::endl;
+		DEBUG_MSG("inflate 2 failed");
 		return false;//retVal;
 	}
 
@@ -830,7 +832,7 @@ const bool MapLoader::m_Decompress(const char* source, std::vector<unsigned char
 		case Z_DATA_ERROR:
 		case Z_MEM_ERROR:
 			inflateEnd(&stream);
-			std::cout << result << std::endl;
+			DEBUG_MSG(result);
 			return false;
 		}
 
@@ -852,8 +854,8 @@ const bool MapLoader::m_Decompress(const char* source, std::vector<unsigned char
 
 	if(stream.avail_in != 0)
 	{
-		std::cout << "stream.avail_in is 0" << std::endl;
-		std::cout << "zlib decompression failed." << std::endl;
+		DEBUG_MSG("stream.avail_in is 0");
+		DEBUG_MSG("zlib decompression failed.");
 		return false;
 	}
 
@@ -895,7 +897,7 @@ std::shared_ptr<sf::Image> MapLoader::m_LoadImage(std::string path)
 /*
    base64.cpp and base64.h
 
-   Copyright (C) 2004-2008 René Nyffenegger
+   Copyright (C) 2004-2008 Renï¿½ Nyffenegger
 
    This source code is provided 'as-is', without any express or implied
    warranty. In no event will the author be held liable for any damages
@@ -915,7 +917,7 @@ std::shared_ptr<sf::Image> MapLoader::m_LoadImage(std::string path)
 
    3. This notice may not be removed or altered from any source distribution.
 
-   René Nyffenegger rene.nyffenegger@adp-gmbh.ch
+   Renï¿½ Nyffenegger rene.nyffenegger@adp-gmbh.ch
 
 */
 
