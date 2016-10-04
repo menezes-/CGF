@@ -127,7 +127,7 @@ set(CGF_HEADERS
     ${CGF_ROOT}/lib/CGF/include/tmx/MapObject.h
     ${CGF_ROOT}/lib/CGF/include/tmx/zconf.h
     ${CGF_ROOT}/lib/CGF/include/TextureManager.h
-    )
+    lib/CGF/include/Debug.h)
 
 set(CGF_SOURCES
     ${CGF_ROOT}/lib/CGF/source/TextureManager.cpp
@@ -174,7 +174,7 @@ message(STATUS "Suporta LTO = ${GXX_HAS_LTO_FLAG}")
 
 target_compile_options(CGF PUBLIC
                        -std=c++11 -Wall -Wextra -Wno-unused-parameter -Wno-unused-function -Wno-ignored-qualifiers -Wno-reorder
-                       $<$<CONFIG:Debug>:-g -O0>
+                       $<$<CONFIG:Debug>:-g -Og>
                        $<$<CONFIG:Release>:-g0 -O2 -s $<$<BOOL:${GXX_HAS_LTO_FLAG}>:-flto>>)
 
 if (WIN32)
@@ -191,14 +191,23 @@ target_include_directories(CGF PUBLIC ${BOX2D_ROOT}/include)
 target_include_directories(CGF PUBLIC ${CGF_ROOT}/lib/glew-1.10/include)
 target_link_libraries(CGF ${BOX2D_LIB} sfml-system sfml-window sfml-graphics sfml-audio ${ZLIB_LIBRARIES})
 
+# desabilita/habilita loggin
+
+set(CGF_DISABLE_LOGGING FALSE CACHE BOOL "Desabilita mensagens de debug")
+if (CGF_DISABLE_LOGGING)
+    message(STATUS "Desabilitando mensagens de debug")
+    target_compile_definitions(CGF PRIVATE -DDISABLE_LOGGING)
+endif ()
+
+
 #=====================CGF=====================
 
 ######################EXEMPLOS######################
 
 set(EXAMPLE_OUTPUT ${PROJECT_SOURCE_DIR}/bin/example CACHE PATH "Aonde vão os binários dos exemplos")
-set(BUILD_EXAMPLES FALSE CACHE BOOL "Compilar os exemplos")
+set(CGF_BUILD_EXAMPLES FALSE CACHE BOOL "Compilar os exemplos")
 
-if (BUILD_EXAMPLES)
+if (CGF_BUILD_EXAMPLES)
     set(E1
         examples/01_Movement/main.cpp
         examples/01_Movement/MenuState.cpp

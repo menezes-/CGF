@@ -8,7 +8,7 @@
  */
 
 #include "Sprite.h"
-#include <iostream>
+#include "Debug.h"
 #include <iomanip>
 #include <string>
 #include <cmath>
@@ -53,8 +53,8 @@ bool Sprite::load(const char *filename)
     rect.width = spriteW;
     rect.top = 0;
     rect.height = spriteH;
-    cout << "image: " << rect.left << "," << rect.top
-         << " - " << rect.width << "x" << rect.height << endl;
+    DEBUG_MSG("image: " << rect.left << "," << rect.top
+         << " - " << rect.width << "x" << rect.height);
     frames.push_back(rect);
     totalFrames = frames.size();
     setCurrentFrame(0);
@@ -74,7 +74,7 @@ bool Sprite::load(const char *filename, int w, int h, int hSpace, int vSpace, in
 
 bool Sprite::loadXML(const char *xmlFile)
 {
-    cout << "Sprite::loadXML " << xmlFile << endl;
+    DEBUG_MSG("Sprite::loadXML " << xmlFile);
 
     pugi::xml_document doc;
     pugi::xml_parse_result result = doc.load_file(xmlFile);
@@ -90,11 +90,11 @@ bool Sprite::loadXML(const char *xmlFile)
     string attrib = imagepath.as_string();
     string prefix = "data/img/";
 
-    cout << "Sprite::loadSpriteSparrowXML: " << attrib << endl;
+    DEBUG_MSG("Sprite::loadSpriteSparrowXML: " << attrib);
 
     prefix.append(attrib);// = "data/img/"+attrib;
 
-    cout << "TextureAtlas: " << prefix << endl;
+    DEBUG_MSG("TextureAtlas: " << prefix);
 
     tex = tm->findTexture((char *)prefix.c_str());
     if(tex == NULL)
@@ -119,8 +119,8 @@ bool Sprite::loadXML(const char *xmlFile)
         rect.width = w;
         rect.top = y1;
         rect.height = h;
-        cout << "frame " << setw(3) << frames.size() << ": " << rect.left << "," << rect.top
-            << " - " << rect.width << "x" << rect.height << endl;
+        DEBUG_MSG("frame " << setw(3) << frames.size() << ": " << rect.left << "," << rect.top
+            << " - " << rect.width << "x" << rect.height);
         frames.push_back(rect);
 
         //TODO: get spacing and margin
@@ -139,7 +139,7 @@ bool Sprite::loadXML(const char *xmlFile)
 
     totalFrames = frames.size();
 
-    cout << "Sprite::loadSpriteSparrowXML total frames = " << totalFrames << endl;
+    DEBUG_MSG("Sprite::loadSpriteSparrowXML total frames = " << totalFrames);
 
     setCurrentFrame(0);
     return true;
@@ -147,7 +147,7 @@ bool Sprite::loadXML(const char *xmlFile)
 
 bool Sprite::loadAnimation(const char *filename)
 {
-    cout << "Sprite::loadAnimation " << filename << endl;
+    DEBUG_MSG("Sprite::loadAnimation " << filename);
 
     pugi::xml_document doc;
     pugi::xml_parse_result result = doc.load_file(filename);
@@ -164,14 +164,14 @@ bool Sprite::loadAnimation(const char *filename)
     {
         cgf::Anim anim;
         string name = seq.attribute("name").as_string();
-        cout << "Animation: " << name << endl;
+        DEBUG_MSG("Animation: " << name);
         anim.frameStart = seq.attribute("start").as_int();
         anim.frameEnd   = seq.attribute("end").as_int();
         anim.loop       = seq.attribute("loop").as_bool();
         anims[name] = anim;
     }
 
-    cout << "Sprite::loadAnimation total sequences = " << anims.size() << endl;
+    DEBUG_MSG("Sprite::loadAnimation total sequences = " << anims.size());
     return true;
 }
 
@@ -221,7 +221,7 @@ bool Sprite::loadMultiImage(const char *filename,
             rect.width = w;
             rect.top = y;
             rect.height = h;
-            cout << "frame " << setw(3) << tot << ": " << x << " " << y << " " << w << " " << h << endl;
+            DEBUG_MSG("frame " << setw(3) << tot << ": " << x << " " << y << " " << w << " " << h);
             frames.push_back(rect);
 
             x += w + hSpace;
@@ -235,7 +235,7 @@ bool Sprite::loadMultiImage(const char *filename,
 
     //setOrigin(w/2, h/2);
 
-    cout << "Sprite::loadMultimage total frames = " << total << endl;
+    DEBUG_MSG("Sprite::loadMultimage total frames = " << total);
 
     return true;
 }

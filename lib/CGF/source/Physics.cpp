@@ -8,7 +8,7 @@
  */
 
 #include "Physics.h"
-#include <iostream>
+#include "Debug.h"
 #define _USE_MATH_DEFINES 1
 #include <cmath>
 #define RAD2DEG 57.2957795
@@ -27,7 +27,7 @@ const double PI = std::atan(1.0)*4;
 void Physics::setConvFactor(float conv)
 {
     CONV = conv;
-    cout << "Physics::setConvFactor" << conv<<endl;
+    DEBUG_MSG("Physics::setConvFactor" << conv);
 }
 
 Physics::Physics()
@@ -47,7 +47,7 @@ void Physics::setRenderTarget(sf::RenderTarget& win)
 
 Physics::~Physics()
 {
-    cout << "Physics: cleanup" << endl;
+    DEBUG_MSG("Physics: cleanup");
     delete world;
 }
 
@@ -64,7 +64,7 @@ b2Body* Physics::newRect(int id, Sprite* image, float density, float friction, f
     float height = size.y*scale.y/CONV;
     image->setOrigin(sf::Vector2f(size.x/2,size.y/2));
 
-    cout << "Physics::newBoxImage " << pos.x << "," << pos.y << " - " << size.x << " x " << size.y << endl;
+    DEBUG_MSG("Physics::newBoxImage " << pos.x << "," << pos.y << " - " << size.x << " x " << size.y);
 
 	b2PolygonShape box;
     box.SetAsBox(width/2,height/2);
@@ -99,7 +99,7 @@ b2Body* Physics::newRect(int id, float x, float y, float width, float height, fl
     if(!staticObj)
         bd.type = b2_dynamicBody;
 
-    cout << "Physics::newBox " << x << "," << y << " - " << width << " x " << height << endl;
+    DEBUG_MSG("Physics::newBox " << x << "," << y << " - " << width << " x " << height);
 
 	b2PolygonShape box;
     width = width/2;
@@ -145,7 +145,7 @@ b2Body* Physics::newCircle(int id, Sprite* image, float density, float friction,
     float radius = max(width,height);
     radius/=2;
 
-    cout << "Physics::newCircleImage " << pos.x << "," << pos.y << " - " << radius << endl;
+    DEBUG_MSG("Physics::newCircleImage " << pos.x << "," << pos.y << " - " << radius);
 
     b2CircleShape cs;
     cs.m_radius = radius;
@@ -354,7 +354,7 @@ void Physics::debugDraw(sf::RenderWindow& win)
                     case b2Shape::e_polygon:
                         pol = (b2PolygonShape*) f->GetShape();
 
-                        cout << "b2Shape::poly" << endl;
+                        DEBUG_MSG("b2Shape::poly");
                         min.x = min.y = 1E5;
                         max.x = max.y = -1E5;
 
@@ -369,7 +369,7 @@ void Physics::debugDraw(sf::RenderWindow& win)
                               if(v.y > max.y) max.y = v.y;
                               //glVertex2f(v.x*CONV,v.y*CONV);
                           }
-                        cout << endl;
+
                         sizes = max - min;
 //                        cout << "Min: " << min.x << ", " << min.y << endl;
 //                        cout << "Max: " << max.x << ", " << max.y << endl;
@@ -383,7 +383,7 @@ void Physics::debugDraw(sf::RenderWindow& win)
                     case b2Shape::e_circle:
                         circ = (b2CircleShape*) f->GetShape();
                         float radius = circ->m_radius;
-                        cout << "b2Shape::circle" << endl;
+                        DEBUG_MSG("b2Shape::circle");
                         //cout << "drawing circle " << radius << endl;
                         /*glBegin(GL_TRIANGLE_FAN);
                           glVertex2f(0,0);

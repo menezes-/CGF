@@ -9,10 +9,9 @@
 
 #include "Game.h"
 #include "GameState.h"
-
 #include <iostream>
-#include <assert.h>
 #include <cmath>
+#include "Debug.h"
 
 namespace cgf
 {
@@ -25,7 +24,7 @@ Game::Game(int minFrameRate, int maxFrameRate)
     this->minFrameRate = minFrameRate;
     this->maxFrameRate = maxFrameRate;
     updateInterval = 1.0 / maxFrameRate*1000;
-    cout << "Update interval: " << updateInterval << endl;
+    DEBUG_MSG("Update interval: " << updateInterval);
     maxCyclesPerFrame = (double) maxFrameRate / minFrameRate;
     lastFrameTime = 0;
     cyclesLeftOver = 0;
@@ -54,18 +53,22 @@ void Game::init(const char* title, int width, int height, bool fullscreen)
 	this->fullscreen = fullscreen;
 
 	running = true;
-
+    // Essa função não fazia nada, pois tinha um return logo no início dela.
+    // achei que seria melhor deixá-la ativada caso a pessoa passe tenha habilitado os logs de debug
+    // (se essa função sempre estiver habilitada e DISABLE_LOGGING estiver definido ela gera um warning de variável definida, porém não usada.
+    //  Esse warning ocorre devido ao macro DEBUG_MSG que foi colocado no corpo da função)
+#ifndef DISABLE_LOGGING
     printAttributes();
+#endif
 
 //	glewInit();
 
-	cout << "Game Initialised Succesfully" << endl;
+	DEBUG_MSG("Game Initialised Succesfully");
 }
 
 
 void Game::printAttributes ()
 {
-    return;
     std::vector<sf::VideoMode> modes = sf::VideoMode::getFullscreenModes();
     for (std::size_t i = 0; i < modes.size(); ++i)
     {

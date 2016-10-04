@@ -8,7 +8,7 @@
  */
 
 #include "TextureManager.h"
-#include <iostream>
+#include "Debug.h"
 
 namespace cgf
 {
@@ -25,7 +25,7 @@ TextureManager::TextureManager()
 TextureManager::~TextureManager()
 {
     //dtor
-    cout << "~TextureManager: deleting " << imgs.size() << endl;
+    DEBUG_MSG("~TextureManager: deleting " << imgs.size());
     map<string,sf::Texture*>::iterator it = imgs.begin();
     while(it != imgs.end())
     {
@@ -38,17 +38,17 @@ TextureManager::~TextureManager()
 sf::Texture* TextureManager::findTexture(const char *nomeArq)
 {
     if(imgs.find(nomeArq) == imgs.end()) {
-        cout << "New texture: " << nomeArq;
+        DEBUG_MSG_NN("New texture: " << nomeArq);
         sf::Texture* tex = new sf::Texture();
         if(!tex->loadFromFile(nomeArq))
             return NULL;
-        cout << " (" << tex->getSize().x << " x " << tex->getSize().y << ")" << endl;
+        DEBUG_MSG(" (" << tex->getSize().x << " x " << tex->getSize().y << ")");
         imgs[nomeArq] = tex;
         tex->setSmooth(true);
         return tex;
     }
     // Return texture id
-    cout << "Existing texture: " << nomeArq << " (" << imgs[nomeArq]->getSize().x << " x " << imgs[nomeArq]->getSize().y << ")" << endl;
+    DEBUG_MSG("Existing texture: " << nomeArq << " (" << imgs[nomeArq]->getSize().x << " x " << imgs[nomeArq]->getSize().y << ")");
     return imgs[nomeArq];
 }
 
