@@ -35,6 +35,8 @@ public:
     bool load(const char *filename);
     bool load(const char *filename, int w, int h, int hSpace, int vSpace, int xIni, int yIni,
               int column, int row, int total);
+    bool load(const char *filename, int w, int h, int hSpace, int vSpace, int xIni, int yIni,
+              int column, int row);
     bool loadXML(const char *filename);
     bool loadAnimation(const char *filename);
 

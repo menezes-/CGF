@@ -72,6 +72,10 @@ bool Sprite::load(const char *filename, int w, int h, int hSpace, int vSpace, in
 	return true;
 }
 
+bool Sprite::load(const char *filename, int w, int h, int hSpace, int vSpace, int xIni, int yIni, int column, int row) {
+    return load(filename, w, h, hSpace, vSpace, xIni, yIni, column, row, column * row);
+}
+
 bool Sprite::loadXML(const char *xmlFile)
 {
     DEBUG_MSG("Sprite::loadXML " << xmlFile);
