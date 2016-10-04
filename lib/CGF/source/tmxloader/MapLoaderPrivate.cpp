@@ -164,11 +164,12 @@ const bool MapLoader::m_ParseTileSets(const pugi::xml_node& mapNode)
 
 const bool MapLoader::m_ProcessTiles(const pugi::xml_node& tilesetNode)
 {
-	sf::Uint16 tileWidth, tileHeight, spacing, margin;
-
+	sf::Uint16 spacing, margin;
+    auto tileWidth = tilesetNode.attribute("tilewidth").as_uint();
+    auto tileHeight = tilesetNode.attribute("tileheight").as_uint();
 	//try and parse tile sizes
-	if(!(tileWidth = tilesetNode.attribute("tilewidth").as_int()) ||
-		!(tileHeight = tilesetNode.attribute("tileheight").as_int()))
+	if(!(tileWidth) ||
+		!(tileHeight))
 	{
 		DEBUG_MSG( "Invalid tileset data found. Map not loaded.");
 		m_Unload();

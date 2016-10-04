@@ -13,6 +13,7 @@
 #include <SFML/Audio.hpp>
 #include <SFML/Graphics.hpp>
 #include <stack>
+#include <memory>
 #include "ClockHUD.h"
 
 namespace cgf
@@ -35,7 +36,7 @@ class Game
         void clean();
         bool isRunning() { return running; }
         void quit()    { running = false; }
-        sf::RenderWindow* getScreen() { return screen; }
+        sf::RenderWindow* getScreen() { return screen.get(); }
         static void printAttributes();
         double getUpdateInterval() { return updateInterval; }
 
@@ -45,7 +46,8 @@ class Game
 
     private:
 
-        sf::RenderWindow* screen;
+        // idealmente screen deveria ser inicializado no construtor da classe
+        std::unique_ptr<sf::RenderWindow> screen{nullptr};
         sf::View originalView;
         bool running;
         bool fullscreen;
@@ -64,7 +66,7 @@ class Game
 
         sf::Font font;
         sfx::FrameClock clock;
-        ClockHUD* hud;
+        std::unique_ptr<ClockHUD> hud;
         // Audio engine
 //        irrklang::ISoundEngine* audioEngine;
 };

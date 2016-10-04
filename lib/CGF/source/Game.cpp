@@ -37,16 +37,16 @@ Game::Game(int minFrameRate, int maxFrameRate)
     }
 
     showStats = false;
-    hud = new ClockHUD(clock, font);
+    hud = std::unique_ptr<ClockHUD>{new ClockHUD{clock, font}};
     clock.setSampleDepth(100); // Sample 100 frames for averaging.
 }
 
 void Game::init(const char* title, int width, int height, bool fullscreen)
 {
-    screen = new sf::RenderWindow(sf::VideoMode(width, height), title);
+    screen = std::unique_ptr<sf::RenderWindow>{new sf::RenderWindow(sf::VideoMode(width, height), title)};
     // Enable transparency through blending
-//    glEnable(GL_BLEND);
-//    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    // glEnable(GL_BLEND);
+    // glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     originalView = screen->getView();
 
@@ -172,8 +172,6 @@ void Game::clean()
 		states.top()->cleanup();
 		states.pop();
     }
-    delete hud;
-    delete screen;
 }
 
 } // namespace cgf

@@ -5,18 +5,14 @@
 #include <SFML/Graphics.hpp>
 #include <map>
 #include "Collision.h"
+#include <memory>
 
 namespace Collision
 {
     class BitmaskManager
     {
+        using Uint8Arr = std::unique_ptr<sf::Uint8[]>;
     public:
-        ~BitmaskManager() {
-            std::map<const sf::Texture*, sf::Uint8*>::const_iterator end = Bitmasks.end();
-            for (std::map<const sf::Texture*, sf::Uint8*>::const_iterator iter = Bitmasks.begin(); iter!=end; iter++)
-                delete [] iter->second;
-        }
-
         sf::Uint8 GetPixel (const sf::Uint8* mask, const sf::Texture* tex, unsigned int x, unsigned int y) {
             if (x>tex->getSize().x||y>tex->getSize().y)
                 return 0;
@@ -26,33 +22,34 @@ namespace Collision
 
         sf::Uint8* GetMask (const sf::Texture* tex) {
             sf::Uint8* mask;
-            std::map<const sf::Texture*, sf::Uint8*>::iterator pair = Bitmasks.find(tex);
+            auto pair = Bitmasks.find(tex);
             if (pair==Bitmasks.end())
             {
                 sf::Image img = tex->copyToImage();
                 mask = CreateMask (tex, img);
             }
-            else
-                mask = pair->second;
+            else {
+                mask = pair->second.get();
+            }
 
             return mask;
         }
 
         sf::Uint8* CreateMask (const sf::Texture* tex, const sf::Image& img) {
-            sf::Uint8* mask = new sf::Uint8[tex->getSize().y*tex->getSize().x];
-
+            Uint8Arr mask = Uint8Arr{new sf::Uint8[tex->getSize().y*tex->getSize().x]};
+            sf::Uint8* ret = mask.get();
             for (unsigned int y = 0; y<tex->getSize().y; y++)
             {
                 for (unsigned int x = 0; x<tex->getSize().x; x++)
                     mask[x+y*tex->getSize().x] = img.getPixel(x,y).a;
             }
+            Bitmasks.insert(std::make_pair(tex, std::move(mask)));
 
-            Bitmasks.insert(std::pair<const sf::Texture*, sf::Uint8*>(tex,mask));
-
-            return mask;
+            return ret;
         }
     private:
-        std::map<const sf::Texture*, sf::Uint8*> Bitmasks;
+        // todo: considerar usar um vector?
+        std::map<const sf::Texture*, Uint8Arr> Bitmasks;
     };
 
     BitmaskManager Bitmasks;
@@ -67,8 +64,8 @@ namespace Collision
             sf::Uint8* mask2 = Bitmasks.GetMask(Object2.getTexture());
 
             // Loop through our pixels
-            for (int i = Intersection.left; i < Intersection.left+Intersection.width; i++) {
-                for (int j = Intersection.top; j < Intersection.top+Intersection.height; j++) {
+            for (auto i = Intersection.left; i < Intersection.left+Intersection.width; i++) {
+                for (auto j = Intersection.top; j < Intersection.top+Intersection.height; j++) {
 
                     sf::Vector2f o1v = Object1.getInverseTransform().transformPoint(i, j);
                     sf::Vector2f o2v = Object2.getInverseTransform().transformPoint(i, j);
@@ -78,8 +75,9 @@ namespace Collision
                         o1v.x < O1SubRect.width && o1v.y < O1SubRect.height &&
                         o2v.x < O2SubRect.width && o2v.y < O2SubRect.height) {
 
-                            if (Bitmasks.GetPixel(mask1, Object1.getTexture(), (int)(o1v.x)+O1SubRect.left, (int)(o1v.y)+O1SubRect.top) > AlphaLimit &&
-                                Bitmasks.GetPixel(mask2, Object2.getTexture(), (int)(o2v.x)+O2SubRect.left, (int)(o2v.y)+O2SubRect.top) > AlphaLimit)
+                            if (Bitmasks.GetPixel(mask1, Object1.getTexture(), static_cast<unsigned int>((o1v.x)+O1SubRect.left), static_cast<unsigned int>((o1v.y)+O1SubRect.top)) > AlphaLimit &&
+                                Bitmasks.GetPixel(mask2, Object2.getTexture(),
+                                                  static_cast<unsigned int>((o2v.x)+O2SubRect.left), static_cast<unsigned int>((o2v.y)+O2SubRect.top)) > AlphaLimit)
                                 return true;
 
                     }
