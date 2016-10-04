@@ -58,6 +58,7 @@
 		<Unit filename="../../lib/CGF/include/EEDebugDraw3.h" />
 		<Unit filename="../../lib/CGF/include/FrameClock.h" />
 		<Unit filename="../../lib/CGF/include/Game.h" />
+		<Unit filename="../../lib/CGF/include/Debug.h" />
 		<Unit filename="../../lib/CGF/include/GameState.h" />
 		<Unit filename="../../lib/CGF/include/InputManager.h" />
 		<Unit filename="../../lib/CGF/include/MenuState.h" />

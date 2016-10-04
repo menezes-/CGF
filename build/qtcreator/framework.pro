@@ -47,6 +47,7 @@ HEADERS += ../../include/TextureManager.h \
     ../../include/MenuState.h \
     ../../include/Sprite.h \
     ../../include/Game.h \
+    ../../include/Debug.h \
     ../../include/GameState.h \
     ../../include/Anim.h \
     ../../include/Physics.h \
