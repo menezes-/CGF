@@ -11,8 +11,13 @@
 #define CGF_PHYSICS_H
 
 #include <Box2D/Box2D.h>
+#include <memory>
+#include <vector>
 #include "Sprite.h"
 #include "EEDebugDraw3.h"
+
+#define _USE_MATH_DEFINES 1
+#include <cmath>
 
 namespace cgf
 {
@@ -26,8 +31,9 @@ struct BodyData
 
 class Physics
 {
+    using BDataPtr = std::unique_ptr<BodyData>;
     public:
-        b2World* getWorld() { return world; }
+        b2World* getWorld() { return world.get(); }
         b2Body* newRect(int id, Sprite* sprite, float density, float friction, float restitution, bool staticObj=false);
         b2Body* newRect(int id, float x, float y, float width, float height, float density, float friction, float restitution, bool staticObj=false);
         b2Body* newCircle(int id, Sprite* sprite, float density, float friction, float restitution, bool staticObj=false);
@@ -67,19 +73,24 @@ class Physics
         }
     protected:
         Physics();
-        ~Physics();
     private:
-        static Physics m_Physics;
-        static const int velocityIterations = 10;
-        static const int positionIterations = 8;
-        static const float timeStep;
 
+        BodyData* createBodyData(int id, cgf::Sprite* image, b2Color color);
+        static Physics m_Physics;
         static float CONV; // fator de conversão Box2D -> OpenGL
+
+        //constantes
+        static constexpr int velocityIterations{10};
+        static constexpr int positionIterations{10};
+        static constexpr float timeStep{1.0f / 30.0f};
+        static constexpr float PI = std::atan(1.0f)*4;
+
+
 
         float gravity;
         float offsetX, offsetY; // offset to apply to translation when drawing
-
-        b2World* world;
+        std::unique_ptr<b2World> world;
+        std::vector<BDataPtr> userData;
         EEDebugDraw3 debugDraw;
 };
 

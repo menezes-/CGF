@@ -9,9 +9,7 @@
 
 #include "Physics.h"
 #include "Debug.h"
-#define _USE_MATH_DEFINES 1
-#include <cmath>
-#define RAD2DEG 57.2957795
+#define RAD2DEG 57.2957795f
 
 namespace cgf
 {
@@ -19,10 +17,7 @@ namespace cgf
 using namespace std;
 
 float Physics::CONV = 10;
-const float Physics::timeStep = 1.0f / 30.f;
 Physics Physics::m_Physics;
-
-const double PI = std::atan(1.0)*4;
 
 void Physics::setConvFactor(float conv)
 {
@@ -30,11 +25,11 @@ void Physics::setConvFactor(float conv)
     DEBUG_MSG("Physics::setConvFactor" << conv);
 }
 
-Physics::Physics()
+Physics::Physics(): userData{}
 {
     // Init Box2D world
     b2Vec2 gravity(0,10.0f);
-    world = new b2World(gravity);
+    world = std::unique_ptr<b2World>{new b2World(gravity)};
     offsetX = offsetY = 0;
 }
 
@@ -43,12 +38,6 @@ void Physics::setRenderTarget(sf::RenderTarget& win)
     debugDraw.LinkTarget(win);
     world->SetDebugDraw(&debugDraw);
     debugDraw.SetFlags( b2Draw::e_shapeBit );
-}
-
-Physics::~Physics()
-{
-    DEBUG_MSG("Physics: cleanup");
-    delete world;
 }
 
 // Add a new rect and associate a sprite to it
@@ -83,11 +72,13 @@ b2Body* Physics::newRect(int id, Sprite* image, float density, float friction, f
 
 	body->CreateFixture(&fixtureDef);
 
-	BodyData* bodyData = new BodyData;
-    bodyData->id = id;
-	bodyData->image = image;
-	bodyData->color = b2Color(0,0,0);
-	body->SetUserData(bodyData);
+    // Pelo que eu pude ver essa linha gera uma memory leak.
+    // Lendo a documentção do Box2D a função SetUserData, não faz nenhuma cópia dos dados e
+    // nem faz um delete do ponteiro passado para a função.
+    // Assumindo que esta função possa ser chamada várias vezes, com dados diferentes
+    // é necessário guardar os dados gerados em um array até o fim da classe
+    BodyData* ptr = createBodyData(id, image, b2Color(0, 0, 0));
+	body->SetUserData(ptr);
 
 	return body;
 }
@@ -119,12 +110,8 @@ b2Body* Physics::newRect(int id, float x, float y, float width, float height, fl
 
 	body->CreateFixture(&fixtureDef);
 
-	BodyData* bodyData = new BodyData;
-    bodyData->id = id;
-	bodyData->image = NULL;
-	bodyData->color = b2Color(0,0,0);
-	body->SetUserData(bodyData);
-
+    BodyData* ptr = createBodyData(id, nullptr, b2Color(0, 0, 0));
+    body->SetUserData(ptr);
 	return body;
 }
 
@@ -164,10 +151,7 @@ b2Body* Physics::newCircle(int id, Sprite* image, float density, float friction,
 
 	body->CreateFixture(&fixtureDef);
 
-	BodyData* bodyData = new BodyData;
-    bodyData->id = id;
-	bodyData->image = image;
-	bodyData->color = b2Color(0,0,0);
+	BodyData* bodyData = createBodyData(id, image, b2Color(0, 0, 0));
 	body->SetUserData(bodyData);
 
 	return body;
@@ -192,10 +176,7 @@ b2Body* Physics::newCircle(int id, float x, float y, float radius, float density
 	b2Body* body = world->CreateBody(&bd);
 	body->CreateFixture(&fixtureDef);
 
-	BodyData* bodyData = new BodyData;
-    bodyData->id = id;
-	bodyData->image = NULL;
-	bodyData->color = b2Color(0,0,0);
+	BodyData* bodyData = createBodyData(id, nullptr, b2Color(0, 0, 0));
 	body->SetUserData(bodyData);
 
     return body;
@@ -208,18 +189,19 @@ void Physics::setImage(b2Body* body, Sprite* Image)
 
 Sprite* Physics::getImage(b2Body* body)
 {
-    return (Sprite*) body->GetUserData();
+    BodyData* bd = static_cast<BodyData*>(body->GetUserData());
+    return bd->image;
 }
 
 void Physics::setColor(b2Body* body, const b2Color& cor)
 {
-    BodyData* bd = (BodyData*) body->GetUserData();
+    BodyData* bd = static_cast<BodyData*>(body->GetUserData());
     bd->color = cor;
 }
 
 b2Color& Physics::getColor(b2Body* body)
 {
-    BodyData* bd = (BodyData*) body->GetUserData();
+    BodyData* bd = static_cast<BodyData*>(body->GetUserData());
     return bd->color;
 }
 
@@ -234,8 +216,8 @@ void Physics::step()
     world->ClearForces();
     for (b2Body* b = world->GetBodyList(); b; b = b->GetNext())
     {
-        BodyData* ptr = (BodyData*) b->GetUserData();
-        if(ptr->image != NULL) {
+        BodyData* ptr = static_cast<BodyData*>(b->GetUserData());
+        if(ptr->image != nullptr) {
             const b2Vec2& pos = b->GetPosition();
             float rot = b->GetAngle();
             rot = rot * RAD2DEG;
@@ -244,22 +226,6 @@ void Physics::step()
         }
     }
 
-    /*
-    for (b2Contact* c = world->GetContactList(); c; c = c->GetNext())
-    {
-        // process c
-        b2Fixture* a = c->GetFixtureA();
-        b2Fixture* b = c->GetFixtureB();
-        b2Body* ba = a->GetBody();
-        b2Body* bb = b->GetBody();
-        BodyData* bda = (BodyData*) ba->GetUserData();
-        BodyData* bdb = (BodyData*) bb->GetUserData();
-        b2Vec2 posa = ba->GetPosition();
-        b2Vec2 posb = bb->GetPosition();
-        cout <<  "Contact: " << bda->id << " with " << bdb->id << " -> " << posa.x << "," << posa.y << " with "
-             << posb.x << "," << posb.y << endl;
-    }
-    */
 }
 
 void Physics::drawDebugData()
@@ -278,18 +244,15 @@ b2Body* Physics::haveContact(int id1, int id2)
         b2Fixture* b = c->GetFixtureB();
         b2Body* ba = a->GetBody();
         b2Body* bb = b->GetBody();
-        BodyData* bda = (BodyData*) ba->GetUserData();
-        BodyData* bdb = (BodyData*) bb->GetUserData();
-     //   b2Vec2 posa = ba->GetPosition();
-     //   b2Vec2 posb = bb->GetPosition();
-     //   cout <<  "Contact: " << bda->id << " with " << bdb->id << " -> " << posa.x << "," << posa.y << " with "
-     //   << posb.x << "," << posb.y << endl;
+        BodyData* bda = static_cast<BodyData*>(ba->GetUserData());
+        BodyData* bdb = static_cast<BodyData*>(bb->GetUserData());
+
         if(bda->id==id1 && bdb->id==id2)
             return bb;
         else if(bda->id==id2 && bdb->id==id1)
             return ba;
     }
-    return NULL;
+    return nullptr;
 }
 
 // Draw all physics objects with transparency
@@ -301,8 +264,8 @@ void Physics::debugDraw(sf::RenderWindow& win)
 
     for (b2Body* b = world->GetBodyList(); b; b = b->GetNext())
     {
-        BodyData* ptr = (BodyData*) b->GetUserData();
-        if(ptr->image == NULL || 1) {
+        BodyData* ptr = static_cast<BodyData*>(b->GetUserData());
+        if(ptr->image == nullptr || 1) {
             const b2Vec2& pos = b->GetPosition();
             float rot = b->GetAngle();
             rot = rot * 180/M_PI;
@@ -320,7 +283,7 @@ void Physics::debugDraw(sf::RenderWindow& win)
             tx += offsetX;
             ty += offsetY;
             /*
-            if(ptr->image != NULL)
+            if(ptr->image != nullptr)
             {
                 tx += ptr->image->getXOffset();
                 ty += ptr->image->getYOffset();
@@ -347,7 +310,7 @@ void Physics::debugDraw(sf::RenderWindow& win)
             b2PolygonShape* pol;
             b2CircleShape* circ;
             b2Vec2 min, max, sizes;
-            while(f != NULL)
+            while(f != nullptr)
             {
                 switch(f->GetType())
                 {
@@ -439,13 +402,24 @@ b2Vec2 Physics::getPosition(b2Body* body)
 void Physics::setAngle(b2Body* body, float angle)
 {
     const b2Vec2& pos = body->GetPosition();
-    body->SetTransform(pos, angle*PI/180.0);
+    body->SetTransform(pos, angle*PI/180.0f);
 }
 
 void Physics::setDrawOffset(float ox, float oy)
 {
     offsetX = ox;
     offsetY = oy;
+}
+
+
+BodyData *Physics::createBodyData(int id, cgf::Sprite *image, b2Color color) {
+    BDataPtr bodyData{new BodyData};
+    bodyData->id = id;
+    bodyData->image = image;
+    bodyData->color = color;
+    BodyData* ptr = bodyData.get();
+    userData.push_back(std::move(bodyData));
+    return ptr;
 }
 
 } // namespace cgf
