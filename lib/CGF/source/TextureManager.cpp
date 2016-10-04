@@ -35,7 +35,7 @@ sf::Texture* TextureManager::findTexture(const char *nomeArq)
         
         tex->setSmooth(true);
         sf::Texture* texptr = tex.get();
-        imgs.insert({nomeArq, std::move(tex)});
+        imgs.insert(std::make_pair(nomeArq, std::move(tex)));
         
         return texptr;
     }
