@@ -27,7 +27,7 @@ sf::Texture* TextureManager::findTexture(const char *nomeArq)
     auto find = imgs.find(nomeArq);
     if(find == imgs.end()) {
         DEBUG_MSG_NN("New texture: " << nomeArq);
-        TexPtr tex = TexPtr{};
+        TexPtr tex = TexPtr{new sf::Texture};
         if(!tex->loadFromFile(nomeArq)) {
             return nullptr;
         }
