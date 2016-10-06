@@ -10,7 +10,7 @@ The framework is based on SFML (Simple and Fast Multimedia Library), which alrea
 * Examples can be found in the "examples" directory. Each has corresponding project files.
 * In order to rebuild the library, the "build" directory contains build files (projects) for Code::Blocks and QtCreator. Each directory also has a README file.
 
-### CMake ### 
+### CMake 
 It's possible to use CMake to compile the framework/use it with your own CMake project.
 To use it in your own CMakeLists.txt:
 * Clone or download the repository contents
