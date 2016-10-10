@@ -26,8 +26,8 @@ Sprite::Sprite()
     mirror = false;
     visible = true;
     // Init animation vars
-    xspeed = 0;
-    yspeed = 0;
+    xspeed = 0.0f;
+    yspeed = 0.0f;
     curframe = 0;
     curFrameD = 0;
     framedelay = 10;
@@ -281,13 +281,13 @@ Sprite::~Sprite()
 }
 
 // Especifica quantos pixels o sprite ira se mover em x.
-void Sprite::setXspeed(double xspeed)
+void Sprite::setXspeed(float xspeed)
 {
 	this->xspeed = xspeed;
 }
 
 // Especifica quantos pixels a sprite ira se mover em y.
-void Sprite::setYspeed(double yspeed)
+void Sprite::setYspeed(float yspeed)
 {
 	this->yspeed = yspeed;
 }
@@ -309,7 +309,7 @@ void Sprite::setCurrentFrame(int c)
     vertices[2].position = sf::Vector2f(rect.width, rect.height);
     vertices[3].position = sf::Vector2f(rect.width, 0);
 
-    float left = static_cast<float>(rect.left) + 0.0001;
+    float left = static_cast<float>(rect.left) + 0.0001f;
     float right = left + rect.width;
     float top = static_cast<float>(rect.top);
     float bottom = top + rect.height;
@@ -374,7 +374,7 @@ void Sprite::setAnimRate(int fdelay)
 
 // Metodo responsavel por fazer as atualizacoes necessarias para a correta
 // animacao do sprite.
-void Sprite::update(double deltaTime, bool updatePos)
+void Sprite::update(float deltaTime, bool updatePos)
 {
     if(updatePos) {
         // Move sprite according to its speed and the amount of time that has passed

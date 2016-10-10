@@ -38,7 +38,7 @@ class Game
         void quit()    { running = false; }
         sf::RenderWindow* getScreen() { return screen.get(); }
         static void printAttributes();
-        double getUpdateInterval() { return updateInterval; }
+        float getUpdateInterval() { return updateInterval; }
 
         void toggleStats() { showStats = !showStats; }
         void enableStats() { showStats = true; }
@@ -59,10 +59,10 @@ class Game
         sf::Clock gameClock;
         int minFrameRate;
         int maxFrameRate;
-        double updateInterval;
-        double maxCyclesPerFrame;
-        double lastFrameTime;
-        double cyclesLeftOver;
+        float updateInterval;
+        float maxCyclesPerFrame;
+        float lastFrameTime;
+        float cyclesLeftOver;
 
         sf::Font font;
         sfx::FrameClock clock;

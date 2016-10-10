@@ -23,9 +23,9 @@ Game::Game(int minFrameRate, int maxFrameRate)
 {
     this->minFrameRate = minFrameRate;
     this->maxFrameRate = maxFrameRate;
-    updateInterval = 1.0 / maxFrameRate*1000;
+    updateInterval = 1.0f / maxFrameRate*1000;
     DEBUG_MSG("Update interval: " << updateInterval);
-    maxCyclesPerFrame = (double) maxFrameRate / minFrameRate;
+    maxCyclesPerFrame = maxFrameRate / minFrameRate;
     lastFrameTime = 0;
     cyclesLeftOver = 0;
 
@@ -125,7 +125,7 @@ void Game::popState()
 
 void Game::update()
 {
-    double currentTime, updateIterations;
+    float currentTime, updateIterations;
 
     currentTime = gameClock.getElapsedTime().asMilliseconds();
     updateIterations = ((currentTime - lastFrameTime) + cyclesLeftOver);
