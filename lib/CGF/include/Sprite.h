@@ -35,6 +35,8 @@ public:
     bool load(const char *filename);
     bool load(const char *filename, int w, int h, int hSpace, int vSpace, int xIni, int yIni,
               int column, int row, int total);
+    bool load(const char *filename, int w, int h, int hSpace, int vSpace, int xIni, int yIni,
+              int column, int row);
     bool loadXML(const char *filename);
     bool loadAnimation(const char *filename);
 
@@ -59,10 +61,10 @@ public:
     bool getMirror() { return mirror; }
 
     // Sprite speed
-    void setXspeed(double xspeed);
-    void setYspeed(double yspeed);
-    double getXspeed() { return xspeed; }
-    double getYspeed() { return yspeed; }
+    void setXspeed(float xspeed);
+    void setYspeed(float yspeed);
+    float getXspeed() { return xspeed; }
+    float getYspeed() { return yspeed; }
 
     // Animation control
     void setAnimation(std::string name);
@@ -88,7 +90,7 @@ public:
 
     sf::Vector2u getSize() { return sf::Vector2u(spriteW, spriteH); }
 
-    void update(double deltaTime, bool updatePos=true);
+    void update(float deltaTime, bool updatePos = true);
 
     // Basic collision checking
     bool bboxCollision(Sprite& other);
@@ -121,7 +123,7 @@ private:
     bool mirror;
 
     // Motion
-    double xspeed,yspeed;       // speed in pixels/s
+    float xspeed,yspeed;       // speed in pixels/s
     int updateCount;            // current count of updates
 
     // Animation

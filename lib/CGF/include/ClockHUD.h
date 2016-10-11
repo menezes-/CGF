@@ -24,8 +24,8 @@ class ClockHUD : public sf::Drawable, public sf::Transformable
 public:
 
     ClockHUD(const sfx::FrameClock& clock, const sf::Font& font)
-        : m_clock (&clock)
-        , m_font  (&font)
+        : m_clock{clock}
+        , m_font{font}
     {}
 
 private:
@@ -36,7 +36,7 @@ private:
         const Stats_t stats = build();
 
         sf::Text elem;
-        elem.setFont(*m_font);
+        elem.setFont(m_font);
         elem.setCharacterSize(16);
         sf::Vector2f pos = getPosition();
 
@@ -85,24 +85,24 @@ private:
     {
         const int count = 10;
         const Stat stats[count] = {
-            { sf::Color::Yellow, format("Time",  "(sec)", m_clock->getTotalFrameTime().asSeconds())        },
-            { sf::Color::White,  format("Frame", "",      m_clock->getTotalFrameCount())                   },
-            { sf::Color::Green,  format("FPS",   "",      m_clock->getFramesPerSecond())                   },
-            { sf::Color::Green,  format("min.",  "",      m_clock->getMinFramesPerSecond())                },
-            { sf::Color::Green,  format("avg.",  "",      m_clock->getAverageFramesPerSecond())            },
-            { sf::Color::Green,  format("max.",  "",      m_clock->getMaxFramesPerSecond())                },
-            { sf::Color::Cyan,   format("Delta", "(ms)",  m_clock->getLastFrameTime().asMilliseconds())    },
-            { sf::Color::Cyan,   format("min.",  "(ms)",  m_clock->getMinFrameTime().asMilliseconds())     },
-            { sf::Color::Cyan,   format("avg.",  "(ms)",  m_clock->getAverageFrameTime().asMilliseconds()) },
-            { sf::Color::Cyan,   format("max.",  "(ms)",  m_clock->getMaxtFrameTime().asMilliseconds())    }
+            { sf::Color::Yellow, format("Time",  "(sec)", m_clock.getTotalFrameTime().asSeconds())        },
+            { sf::Color::White,  format("Frame", "",      m_clock.getTotalFrameCount())                   },
+            { sf::Color::Green,  format("FPS",   "",      m_clock.getFramesPerSecond())                   },
+            { sf::Color::Green,  format("min.",  "",      m_clock.getMinFramesPerSecond())                },
+            { sf::Color::Green,  format("avg.",  "",      m_clock.getAverageFramesPerSecond())            },
+            { sf::Color::Green,  format("max.",  "",      m_clock.getMaxFramesPerSecond())                },
+            { sf::Color::Cyan,   format("Delta", "(ms)",  m_clock.getLastFrameTime().asMilliseconds())    },
+            { sf::Color::Cyan,   format("min.",  "(ms)",  m_clock.getMinFrameTime().asMilliseconds())     },
+            { sf::Color::Cyan,   format("avg.",  "(ms)",  m_clock.getAverageFrameTime().asMilliseconds()) },
+            { sf::Color::Cyan,   format("max.",  "(ms)",  m_clock.getMaxtFrameTime().asMilliseconds())    }
         };
         return Stats_t(&stats[0], &stats[0] + count);
     }
 
 private:
 
-    const sf::Font* m_font;
-    const sfx::FrameClock* m_clock;
+    const sf::Font& m_font;
+    const sfx::FrameClock& m_clock;
 };
 
 #endif // CLOCKHUD_H

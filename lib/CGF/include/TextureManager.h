@@ -13,21 +13,22 @@
 #include <map>
 #include <string>
 #include <SFML/Graphics.hpp>
+#include <memory>
 
 namespace cgf
 {
 
 class TextureManager
 {
+    using TexPtr = std::unique_ptr<sf::Texture>;
     private:
 
         static TextureManager m_TextureManager;
-        std::map<std::string, sf::Texture*> imgs;
+        std::map<std::string, TexPtr> imgs;
         std::string defaultImageDir;            // base dir to load images from
 
     public:
 
-        virtual ~TextureManager();
         sf::Texture* findTexture(const char *nomeArq);
         void setDefaultImageDir(const char *dir);
         void releaseTexture(const char *nomeArq);

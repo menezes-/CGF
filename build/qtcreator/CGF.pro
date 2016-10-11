@@ -39,6 +39,7 @@ HEADERS += ../../lib/CGF/include/TextureManager.h \
     ../../lib/CGF/include/pugixml/pugiconfig.hpp \
     ../../lib/CGF/include/Sprite.h \
     ../../lib/CGF/include/Game.h \
+    ../../lib/CGF/include/Debug.h \
     ../../lib/CGF/include/GameState.h \
     ../../lib/CGF/include/Anim.h \
     ../../lib/CGF/include/Physics.h \

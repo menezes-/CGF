@@ -10,6 +10,31 @@ The framework is based on SFML (Simple and Fast Multimedia Library), which alrea
 * Examples can be found in the "examples" directory. Each has corresponding project files.
 * In order to rebuild the library, the "build" directory contains build files (projects) for Code::Blocks and QtCreator. Each directory also has a README file.
 
+### CMake 
+It's possible to use CMake to compile the framework/use it with your own CMake project.
+To use it in your own CMakeLists.txt:
+* Clone or download the repository contents
+* Use `add_subdirectory(...)` to "include" the framework
+* Use the target `CGF`
+
+To compile the framework (and examples):
+* Clone or download the repository contents
+* 
+```shell
+~]$ cd CGF
+~]$ mkdir build_cmake
+~]$ cd build_cmake
+~]$ cmake -DCGF_BUILD_EXAMPLES=TRUE ..
+~]$ make
+```
+* The compiled librarie and it's dependecies will be inside `build_cmake`
+* The examples will be inside `bin/examples`
+
+Besides building (or not) the examples there are two other options available through CMake:
+* `-DCGF_DISABLE_LOGGING`(FALSE) - Disable or not the debug messages printed by the framework
+* `-DBUILD_SHARED_LIBS`(TRUE) -  If false will build the framework as a static library
+
+
 ### Credits ###
 
 * Tiled map loader (TMX) by Matt Marchant <https://github.com/fallahn/sfml-tmxloader>
