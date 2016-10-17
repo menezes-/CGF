@@ -8,7 +8,7 @@
 #ifndef DISABLE_LOGGING
 
 #include <iostream>
-#define DEBUG_MSG(str) do { std::cout << str << std::endl; } while( false )
+#define DEBUG_MSG(str) do { std::cout << str << '\n'; } while( false )
 // no new line
 #define DEBUG_MSG_NN(str) do { std::cout << str; } while( false )
 
