@@ -402,30 +402,30 @@ void Sprite::update(float deltaTime, bool updatePos)
 // Check bounding box collision between this and other sprite
 bool Sprite::bboxCollision(Sprite& other)
 {
-    sf::Vector2f pos = this->getPosition();
-    sf::Vector2f scale = this->getScale();
+    auto pos = this->getPosition();
+    auto scale = this->getScale();
 
-    float scalex2 = other.getScale().x;
-    float scaley2 = other.getScale().y;
+    auto scalex2 = other.getScale().x;
+    auto scaley2 = other.getScale().y;
 
-    float px2 = other.getPosition().x;
-    float py2 = other.getPosition().y;
+    auto px2 = other.getPosition().x;
+    auto py2 = other.getPosition().y;
 
-    float width1 = this->spriteW/2 * scale.x;
-    float width2 = other.spriteW/2 * scalex2;
+    auto width1 = this->spriteW/2 * scale.x;
+    auto width2 = other.spriteW/2 * scalex2;
 
-    float height1 = this->spriteH/2 * scale.y;
-    float height2 = other.spriteH/2 * scaley2;
+    auto height1 = this->spriteH/2 * scale.y;
+    auto height2 = other.spriteH/2 * scaley2;
 
-    float x0 = pos.x - width1;
-    float y0 = pos.y - height1;
-    float x1 = pos.x + width1;
-    float y1 = pos.y + height1;
+    auto x0 = pos.x - width1;
+    auto y0 = pos.y - height1;
+    auto x1 = pos.x + width1;
+    auto y1 = pos.y + height1;
 
-    float x2 = px2 - width2;
-    float y2 = py2 - height2;
-    float x3 = px2 + width2;
-    float y3 = py2 + height2;
+    auto x2 = px2 - width2;
+    auto y2 = py2 - height2;
+    auto x3 = px2 + width2;
+    auto y3 = py2 + height2;
 
     return !(x1<x2 || x3<x0 || y1<y2 || y3<y0);
 }
