@@ -124,7 +124,6 @@ private:
 
     // Motion
     float xspeed,yspeed;       // speed in pixels/s
-    int updateCount;            // current count of updates
 
     // Animation
     std::map<std::string, cgf::Anim> anims;
