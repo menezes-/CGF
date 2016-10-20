@@ -48,9 +48,7 @@ class PlayState : public cgf::GameState
     std::string walkStates[4];
     int currentDir;
 
-    int x, y;
     int dirx, diry;
-    int edirx;  // enemy x direction (1 or -1)
 
     cgf::Sprite player;
     cgf::Sprite enemy;

@@ -56,7 +56,6 @@ class PlayState : public cgf::GameState
     std::string walkStates[4];
     int currentDir;
 
-    int x, y;
     int dirx, diry;
     int ghostDirx;
 

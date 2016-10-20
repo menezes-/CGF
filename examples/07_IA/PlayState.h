@@ -58,9 +58,7 @@ private:
 
     static PlayState m_PlayState;
 
-    int x, y;
     float speed; // player speed
-    float zvel;
     cgf::Sprite player;
     cgf::Sprite ghost;
 

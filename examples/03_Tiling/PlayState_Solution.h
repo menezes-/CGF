@@ -48,7 +48,6 @@ class PlayState : public cgf::GameState
     std::string walkStates[4];
     int currentDir;
 
-    int x, y;
     int dirx, diry;
     cgf::Sprite player;
     sf::RenderWindow* screen;
