@@ -83,7 +83,7 @@ class Physics
         static constexpr int velocityIterations{10};
         static constexpr int positionIterations{10};
         static constexpr float timeStep{1.0f / 30.0f};
-        static constexpr float PI = std::atan(1.0f)*4;
+        static constexpr float PI = 3.14159265358979323846f;
 
 
 
