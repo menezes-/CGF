@@ -53,7 +53,6 @@ class Game
         bool fullscreen;
         bool showStats;
 
-        int bpp; // bits per pixel (screen colour depth)
         std::stack<GameState*> states;
         // Fixed interval time-based animation
         sf::Clock gameClock;

@@ -46,7 +46,6 @@ private:
 
     static PlayState m_PlayState;
 
-    int x, y;
     float speed;
     sf::RenderWindow* screen;
     cgf::InputManager* im;

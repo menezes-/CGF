@@ -2,7 +2,6 @@
 
 EEDebugDraw3::EEDebugDraw3(void):
 pixmeters(30.f),//arbitrary value dependant on the program needs
-radegrees(57.2957795f),//degrees per radian,a physical constant
 m_target(0x0)
 {
     AppendFlags(static_cast<uint32>(~0));//set all drawing bits to 1(not all 32 are relevant but it's ok)

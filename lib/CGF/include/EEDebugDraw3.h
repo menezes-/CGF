@@ -16,7 +16,7 @@ private:
                         static_cast<sf::Uint8>(255*gCol.b), 100);
     }
     inline sf::Vector2f EEVector(const b2Vec2& gVec){return sf::Vector2f(gVec.x*pixmeters,gVec.y*pixmeters);}
-    const float pixmeters,radegrees;//constants for point and degree conversions
+    const float pixmeters;//constants for point and degree conversions
 public:
     EEDebugDraw3(void);
     virtual ~EEDebugDraw3(void) {}

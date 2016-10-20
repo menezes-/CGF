@@ -42,7 +42,6 @@ class PlayState : public cgf::GameState
 
     static PlayState m_PlayState;
 
-    int x, y;
     int dirx, diry;
     cgf::Sprite player;
     cgf::Sprite playSprite2;
