@@ -86,6 +86,8 @@ namespace tmx
 		//**accessors**//
 		//returns empty string if property not found
 		std::string GetPropertyString(const std::string& name);
+		//returns the object id
+		std::string GetId() const {return m_id;}
 		//returns top left corner of bounding rectangle
 		sf::Vector2f GetPosition() const {return m_position;}
 		//returns precomputed centre of mass, or zero for polylines
@@ -116,6 +118,7 @@ namespace tmx
 		void SetName(const std::string& name){m_name = name;}
 		//sets the object's type
 		void SetType(const std::string& type){m_type = type;};
+		void SetId(const std::string& id){m_id=id;}
 		//sets the name of the object's parent layer
 		void SetParent(const std::string& parent){m_parent = parent;};
 		//sets the shape type
@@ -155,7 +158,7 @@ namespace tmx
 
 private:
 		//object properties, reflects those which are part of the tmx format
-		std::string m_name, m_type, m_parent; //parent is name of layer to which object belongs
+		std::string m_name, m_type, m_parent, m_id; //parent is name of layer to which object belongs
 		//sf::FloatRect m_rect; //width / height property of object plus position in world space
 		sf::Vector2f m_position, m_size;
 		std::map <std::string, std::string> m_properties;//map of custom name/value properties

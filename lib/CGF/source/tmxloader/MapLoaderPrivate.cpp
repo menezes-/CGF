@@ -226,7 +226,7 @@ bool MapLoader::ParseTileSets(const pugi::xml_node& mapNode)
 			std::string path;
 			pugi::xml_document tsxDoc;
 			pugi::xml_parse_result result;
-			
+
 			for(auto& p : m_searchPaths)
 			{
 				path = p + file;
@@ -241,7 +241,7 @@ bool MapLoader::ParseTileSets(const pugi::xml_node& mapNode)
 				Unload(); //purge any partially loaded data
 				return false;
 			}
-			
+
 			//try parsing tileset node
 			pugi::xml_node ts = tsxDoc.child("tileset");
 
@@ -884,10 +884,11 @@ bool MapLoader::ParseObjectgroup(const pugi::xml_node& groupNode)
 		//set object properties
 		if(objectNode.attribute("name")) object.SetName(objectNode.attribute("name").as_string());
 		if(objectNode.attribute("type")) object.SetType(objectNode.attribute("type").as_string());
+		if(objectNode.attribute("id")) object.SetId(objectNode.attribute("id").as_string());
 		//if(objectNode.attribute("rotation")) {} //TODO handle rotation attribute
 		if(objectNode.attribute("visible")) object.SetVisible(objectNode.attribute("visible").as_bool());
 		if(objectNode.attribute("gid"))
-		{		
+		{
 			sf::Uint32 gid = objectNode.attribute("gid").as_int();
 
 			LOG("Found object with tile GID " + gid, Logger::Type::Info);
@@ -895,7 +896,7 @@ bool MapLoader::ParseObjectgroup(const pugi::xml_node& groupNode)
 			object.Move(0.f, static_cast<float>(-m_tileHeight)); //offset for tile origins being at the bottom in Tiled
 			const sf::Uint16 x = static_cast<sf::Uint16>(object.GetPosition().x / m_tileWidth);
 			const sf::Uint16 y = static_cast<sf::Uint16>(object.GetPosition().y / m_tileHeight);
-			
+
 			sf::Vector2f offset(object.GetPosition().x - (x * m_tileWidth), (object.GetPosition().y - (y * m_tileHeight)));
 			object.SetQuad(AddTileToLayer(layer, x, y, gid, offset));
 			object.SetShapeType(Tile);
@@ -1056,7 +1057,7 @@ void MapLoader::DrawLayer(sf::RenderTarget& rt, MapLayer& layer, bool debug)
 
 	if(debug && layer.type == ObjectGroup)
 	{
-		for(const auto& object : layer.objects)		
+		for(const auto& object : layer.objects)
 			if(m_bounds.intersects(object.GetAABB()))
 				object.DrawDebugShape(rt);
 	}
@@ -1168,7 +1169,7 @@ bool MapLoader::Decompress(const char* source, std::vector<unsigned char>& dest,
             std::vector<unsigned char> newArray(currentSize / sizeof(unsigned char));
 			std::memcpy(newArray.data(), byteArray.data(), currentSize / 2);
 			byteArray = std::move(newArray);
-			
+
 			stream.next_out = (Bytef*)(byteArray.data() + oldSize);
 			stream.avail_out = oldSize;
 
@@ -1213,7 +1214,7 @@ sf::Image& MapLoader::LoadImage(const std::string& imageName)
 	std::string path;
 	for(const auto& p : m_searchPaths)
 	{
-		path = p + imageName;		
+		path = p + imageName;
 		loaded = newImage->loadFromFile(path);
 		if(loaded) break;
 	}
