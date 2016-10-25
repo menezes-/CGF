@@ -69,6 +69,7 @@ public:
     // Animation control
     void setAnimation(std::string name);
     void setAnimRate(int fdelay);
+    int getAnimRate() {return framedelay;}
     void play();
     void pause();
     void stop();
